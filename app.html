@@ -786,9 +786,16 @@
   // =========================
   // HELPERS
   // =========================
+  // NIEUWE CODE VOOR DE UITLEG-KNOP
   function toggleHelp(id) {
     const el = document.getElementById(id);
-    el.style.display = (el.style.display === "none") ? "block" : "none";
+    
+    // Als het 'none' is OF als het leeg is (standaard), maak het zichtbaar ('block')
+    if (el.style.display === "none" || el.style.display === "") {
+        el.style.display = "block";
+    } else {
+        el.style.display = "none";
+    }
   }
 
   // Start
