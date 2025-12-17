@@ -690,20 +690,28 @@
            voices.find(v => v.lang.startsWith("fr"));
   }
 
+  // NIEUWE CODE (PLAK DIT IN DE PLAATS)
   function speakText(text) {
     if (!text) return;
-    if (!window.speechSynthesis) {
-      alert("Spraak wordt niet ondersteund op dit toestel.");
-      return;
-    }
-    window.speechSynthesis.cancel(); // Stop vorige
+
+    // 1. Stop alles wat de gsm misschien nog aan het zeggen is (Belangrijk voor iPhone!)
+    window.speechSynthesis.cancel();
+
+    // 2. Maak de zin klaar
     const utter = new SpeechSynthesisUtterance(text);
     
-    const voice = pickFrenchVoice();
-    if (voice) utter.voice = voice;
-    else utter.lang = "fr-FR"; // Fallback
+    // 3. Forceer de taal naar Frans (Dit werkt altijd, ook zonder stemmenlijst)
+    utter.lang = "fr-FR"; 
+    utter.rate = 0.9; // Iets trager spreektempo
 
-    utter.rate = 0.9; // Iets trager voor duidelijkheid
+    // 4. Probeer optioneel een betere stem te vinden, maar zonder te crashen
+    const voices = window.speechSynthesis.getVoices();
+    const frVoice = voices.find(v => v.lang.toLowerCase().includes("fr"));
+    if (frVoice) {
+        utter.voice = frVoice;
+    }
+
+    // 5. Spreek
     window.speechSynthesis.speak(utter);
   }
   
