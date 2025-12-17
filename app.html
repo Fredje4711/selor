@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SELOR Frans (B2) – Oefenapp</title>
+
+<link rel="apple-touch-icon" href="icon.png">
+
+<style>
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f4f4f9;
+    color: #333;
+  }
+
+  header {
+    background: #006ab3; /* NMBS Blauw */
+    color: white;
+    padding: 16px 12px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  }
+
+  header h1 { margin: 0 0 6px 0; font-size: 20px; }
+  header p  { margin: 0; opacity: 0.95; font-size: 14px; }
+
+  nav {
+    display: flex;
+    flex-wrap: wrap;
+    background: #ffffff;
+    border-bottom: 1px solid #ddd;
+  }
+
+  nav button {
+    flex: 1;
+    padding: 15px 5px;
+    border: none;
+    background: #fff;
+    font-size: 14px;
+    cursor: pointer;
+    font-weight: 600;
+    color: #555;
+    border-bottom: 3px solid transparent;
+  }
+
+  nav button.active {
+    color: #006ab3;
+    border-bottom: 3px solid #006ab3;
+    background-color: #f9f9f9;
+  }
+
+  section {
+    display: none;
+    padding: 16px;
+    max-width: 800px;
+    margin: 0 auto;
+    padding-bottom: 80px; /* Ruimte voor scroll */
+  }
+
+  section.active {
+    display: block;
+  }
+
+  .card {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 14px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+    border-left: 5px solid #006ab3;
+  }
+
+  .row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+  }
+
+  button.action {
+    background-color: #006ab3;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 12px 16px;
+    font-size: 16px;
+    cursor: pointer;
+    font-weight: bold;
+    flex-grow: 1; /* Knoppen vullen de breedte */
+  }
+  
+  button.action:active { background-color: #004d80; }
+
+  button.secondary {
+    background-color: #e0e0e0;
+    color: #333;
+  }
+
+  .iconBtn {
+    background: none;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 10px 12px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #fff;
+  }
+
+  h3 { color: #d32f2f; }
+
+  .timer {
+    font-weight: bold;
+    color: #d32f2f;
+    font-size: 1.2rem;
+    margin: 15px 0;
+    text-align: center;
+    border: 2px solid #ddd;
+    padding: 10px;
+    border-radius: 8px;
+    background: #fff;
+  }
+
+  .small {
+    font-size: 14px;
+    opacity: 0.8;
+    margin-top: 15px;
+    line-height: 1.4;
+    font-style: italic;
+  }
+  
+  .activeQuestion {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 12px 0 8px 0;
+    color: #006ab3;
+  }
+
+  .helpLink {
+    display: block;
+    margin-top: 10px;
+    color: #006ab3;
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: 14px;
+  }
+
+  .helpBox {
+    display: none;
+    margin-top: 10px;
+    padding: 12px;
+    border-radius: 8px;
+    background: #eef6fb;
+    border: 1px solid #cfe2f3;
+    line-height: 1.4;
+    font-size: 14px;
+  }
+  .helpBox ul { margin: 8px 0 0 18px; padding: 0; }
+  .helpBox li { margin: 6px 0; list-style-position: inside; }
+
+  hr {
+    border: none;
+    border-top: 1px solid #eee;
+    margin: 20px 0;
+  }
+
+  /* Lijst voor zelftest */
+  #zelftestVragen {
+    list-style: none;
+    padding: 0;
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #eee;
+  }
+  #zelftestVragen li {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+  }
+  #zelftestVragen li:hover, #zelftestVragen li.selected {
+    background-color: #e6f0fa;
+    font-weight: bold;
+  }
+
+  audio { width: 100%; margin-top: 10px; }
+
+  /* Antwoord tekst */
+  #oefenAntwoord, #simAntwoord {
+    background-color: #f1f4f8;
+    padding: 15px;
+    border-radius: 6px;
+    line-height: 1.6;
+    color: #222;
+    border: 1px solid #dce4ec;
+  }
+
+  @media (max-width: 480px) {
+    nav button { font-size: 13px; padding: 12px 4px; }
+    .card { padding: 15px; }
+  }
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>SELOR B2 (NMBS)</h1>
+  <p>Oefenapp voor Mondeling Frans</p>
+</header>
+
+<nav>
+  <button class="active" onclick="showTab('oefen', this)">Oefenen</button>
+  <button onclick="showTab('simulatie', this)">Simulatie</button>
+  <button onclick="showTab('zelftest', this)">Zelftest</button>
+  <button onclick="showTab('spiek', this)">Spiekbrief</button>
+</nav>
+
+<!-- OEFENEN TAB -->
+<section id="oefen" class="active">
+  <div class="card">
+    <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+        <h3 id="oefenVraag" style="margin:0; font-size:1.1rem; flex:1;">Laden...</h3>
+    </div>
+    
+    <div class="row" style="justify-content: flex-end;">
+         <button class="iconBtn" onclick="speakText(stripPrefixForSpeech(document.getElementById('oefenVraag').innerText))">🔊 Luister Vraag</button>
+    </div>
+
+    <span class="helpLink" onclick="toggleHelp('help-oefenen')">ℹ️ Hoe werkt dit?</span>
+    <div class="helpBox" id="help-oefenen">
+      <strong>Stappenplan:</strong>
+      <ul>
+        <li>Lees de vraag.</li>
+        <li>Antwoord hardop (30–60 sec).</li>
+        <li>Klik <strong>Toon antwoord</strong> en vergelijk.</li>
+        <li>Gebruik 🔊 om de uitspraak te oefenen.</li>
+      </ul>
+    </div>
+
+    <hr>
+
+    <p id="oefenAntwoord" style="display:none;"></p>
+
+    <div class="row">
+      <button class="action secondary" onclick="toggleAntwoord()">👁️ Toon / Verberg Antwoord</button>
+      <button class="iconBtn" onclick="speakText(stripPrefixForSpeech(document.getElementById('oefenAntwoord').innerText))">🔊 Luister Antwoord</button>
+    </div>
+
+    <div class="row" style="margin-top:20px;">
+      <button class="action" onclick="vorigeVraag()">⬅️ Vorige</button>
+      <button class="action" onclick="volgendeVraag()">Volgende ➡️</button>
+    </div>
+    
+    <div style="text-align:center; margin-top:10px; font-size:0.9rem; color:#777;">
+        Vraag <span id="oefenCounter">1</span> van <span id="oefenTotal"></span>
+    </div>
+  </div>
+</section>
+
+<!-- SIMULATIE TAB -->
+<section id="simulatie">
+  <div class="card">
+    <h3 id="simVraag" style="margin:0;">Klik op 'Nieuwe vraag' om te starten</h3>
+    
+    <div class="row" style="justify-content: flex-end;">
+         <button class="iconBtn" onclick="speakText(stripPrefixForSpeech(document.getElementById('simVraag').innerText))">🔊 Vraag</button>
+    </div>
+
+    <span class="helpLink" onclick="toggleHelp('help-simulatie')">ℹ️ Hoe werkt simulatie?</span>
+    <div class="helpBox" id="help-simulatie">
+      <strong>Doel:</strong> Tijdsdruk oefenen.<br>
+      Je krijgt een willekeurige vraag. De timer loopt 60 seconden. Blijf praten tot de tijd om is!
+    </div>
+
+    <p class="timer" id="timer">00:60</p>
+
+    <div class="row">
+      <button class="action" onclick="startSimulatie()">🎲 Nieuwe willekeurige vraag</button>
+    </div>
+    
+    <div class="row">
+      <button class="action secondary" onclick="toonSimAntwoord()">Ik ben klaar → Toon antwoord</button>
+    </div>
+
+    <p id="simAntwoord" style="display:none; margin-top:10px;"></p>
+    
+    <div class="row" id="simAudioBtn" style="display:none;">
+        <button class="iconBtn" onclick="speakText(stripPrefixForSpeech(document.getElementById('simAntwoord').innerText))">🔊 Luister Antwoord</button>
+    </div>
+
+    <hr>
+
+    <h4 style="margin:0 0 8px 0;">🎙️ Jezelf opnemen (Lokaal)</h4>
+    <div class="row">
+      <button class="action" id="btnRecStart" onclick="startRecording()">🔴 Start</button>
+      <button class="action secondary" id="btnRecStop" onclick="stopRecording()" disabled>⏹ Stop</button>
+      <button class="action secondary" id="btnRecPlay" onclick="playRecording()" disabled>▶️ Luister</button>
+    </div>
+    <p class="small" id="recStatus" style="margin-top:5px;">Microfoon vereist HTTPS of localhost.</p>
+    <audio id="recAudio" controls style="display:none;"></audio>
+  </div>
+</section>
+
+<!-- ZELFTEST TAB -->
+<section id="zelftest">
+  <div class="card">
+    <h3 style="margin-top:0;">Zelftest (Lijstweergave)</h3>
+    <p class="small" style="margin-top:0;">
+      Kies een vraag om te testen zonder hulp.
+    </p>
+
+    <span class="helpLink" onclick="toggleHelp('help-zelftest')">ℹ️ Hoe werkt de zelftest?</span>
+    <div class="helpBox" id="help-zelftest">
+      <strong>Doel:</strong> Test jezelf zonder antwoorden.<br>
+      <ul>
+        <li>Klik op een vraag uit de lijst hieronder.</li>
+        <li>De timer (50 sec) start meteen.</li>
+        <li>Spreek luidop. Er is hier <strong>geen</strong> antwoordknop!</li>
+      </ul>
+    </div>
+
+    <p class="timer" id="zelftestTimer">50 sec</p>
+    
+    <h4 id="zelftestActiveVraag" class="activeQuestion" style="min-height:30px;">
+      Selecteer een vraag hieronder...
+    </h4>
+
+    <ul id="zelftestVragen"></ul>
+
+    <div class="row">
+      <button class="action" onclick="startZelftestTimer()">🔄 Herstart timer</button>
+    </div>
+  </div>
+</section>
+
+
+<!-- SPIEKBRIEF TAB -->
+<section id="spiek">
+  <div class="card">
+    <h3 style="margin-top:0;">Spiekbriefje (EHBO)</h3>
+    <p class="small" style="margin-top:0;">
+      Gebruik deze structuren als je vastloopt.
+    </p>
+
+    <span class="helpLink" onclick="toggleHelp('help-spiek')">ℹ️ Wanneer gebruik ik dit?</span>
+    <div class="helpBox" id="help-spiek">
+      <strong>Doel:</strong> Hulp bij 'black-outs'.<br>
+      Gebruik deze zinnen als je even niet weet wat zeggen. Leer de <strong>structuur</strong> (D'abord, Ensuite...) vanbuiten.
+    </div>
+
+    <hr>
+
+    <h4 style="color:#006ab3;">1. Startzinnen</h4>
+    <ul>
+      <li><strong>En général...</strong> (In het algemeen...)</li>
+      <li><strong>Dans mon travail à la SNCB...</strong></li>
+      <li><strong>Pour répondre à votre question...</strong></li>
+    </ul>
+
+    <h4 style="color:#006ab3;">2. Structuur (Gouden Regel)</h4>
+    <ul>
+      <li><strong>D’abord</strong>, je vérifie... (Eerst)</li>
+      <li><strong>Ensuite</strong>, j'explique... (Vervolgens)</li>
+      <li><strong>Par exemple</strong>, si un voyageur... (Bijv.)</li>
+      <li><strong>Finalement</strong>, je propose... (Ten slotte)</li>
+    </ul>
+
+    <h4 style="color:#006ab3;">3. Noodzinnen</h4>
+    <ul>
+      <li><strong>Pouvez-vous répéter, s’il vous plaît ?</strong></li>
+      <li><strong>Je cherche le mot en français...</strong></li>
+      <li><strong>Pardon, je voulais dire que...</strong></li>
+    </ul>
+    
+    <h4 style="color:#006ab3;">4. Kernwoorden Veiligheid</h4>
+    <ul>
+      <li><strong>La sécurité est prioritaire.</strong></li>
+      <li><strong>Je reste calme et poli.</strong></li>
+      <li><strong>J'applique la procédure.</strong></li>
+      <li><strong>Je contacte le SOC / Securail.</strong></li>
+    </ul>
+  </div>
+</section>
+
+
+<script>
+  // =======================================================
+  // DATA: Alle 13 Hoofdstukken (1.1 t.e.m. 13.6 Compleet)
+  // =======================================================
+  const vragen = [
+    // 1. Parcours
+    { vraag: "1.1 Quelle est votre profession actuelle ? Depuis quand exercez-vous cette fonction ?", antwoord: "Je suis accompagnateur de train à la SNCB. Je fais ce métier depuis [X] ans. J’aime beaucoup le contact avec les clients et le fait de bouger tout le temps." },
+    { vraag: "1.2 Dans quel dépôt travaillez-vous ? Est-ce loin de votre domicile ?", antwoord: "Je travaille au dépôt de [Naam]. C'est à environ [X] minutes de chez moi. C'est assez proche, donc c'est facile pour organiser ma vie privée." },
+    { vraag: "1.3 Êtes-vous satisfait ?", antwoord: "Oui, je suis satisfait. Le travail est utile et varié. J'aime l'ambiance avec les collègues. Parfois c'est stressant à cause des retards, mais globalement j'aime mon job." },
+    { vraag: "1.4 Comment êtes-vous entré à la SNCB ? Qui vous a donné l’idée/l’envie ?", antwoord: "J'ai vu une offre d'emploi sur internet (ou : un ami m'en a parlé). Je cherchais un emploi stable et j'aime le service public. J'ai donc postulé." },
+    { vraag: "1.5 Quelles études avez-vous faites ? Pourquoi n’avez-vous pas continué dans cette voie ?", antwoord: "J’ai étudié [Uw richting]. Mais je ne voulais pas rester assis dans un bureau. Je voulais un travail plus dynamique avec du contact humain." },
+    { vraag: "1.6 Est-ce votre premier travail ? Sinon, qu’avez-vous fait avant ? Pourquoi avez-vous changé ?", antwoord: "Non, avant j'ai travaillé comme [Job]. J'ai changé parce que je voulais plus de sécurité d'emploi et de meilleures conditions." },
+
+    // 2. Profession
+    { vraag: "2.1 Quelles sont les qualités d’un bon accompagnateur de train ?", antwoord: "Il faut être calme, poli et très ponctuel. Il faut aussi bien connaître les règles de sécurité et savoir gérer le stress en cas de problème." },
+    { vraag: "2.2 Quels sont les avantages de travailler à la SNCB ?", antwoord: "Les avantages sont la sécurité de l'emploi (statutaire), le salaire correct, les congés et la possibilité de voyager gratuitement en train." },
+    { vraag: "2.3 Quels sont les avantages et les désavantages de votre travail ?", antwoord: "Avantages: La liberté et le contact social. Désavantages: Les horaires irréguliers (tôt/tard/week-end) et parfois l'agressivité des voyageurs." },
+    { vraag: "2.4 Prenez-vous le train en dehors de votre travail ? Facilités ?", antwoord: "Oui, je prends souvent le train. Ma famille proche (conjoint, enfants) voyage aussi gratuitement en Belgique. C’est un très grand avantage." },
+    { vraag: "2.5 Avez-vous des possibilités d’avancement dans votre carrière ?", antwoord: "Oui, on peut devenir chef d'équipe ou formateur. Pour l'instant, je suis bien dans ma fonction, mais peut-être plus tard." },
+    { vraag: "2.6 Comment devient-on accompagnateur de train ? (Recrutement – Formation)", antwoord: "D'abord des tests psychotechniques et médicaux. Ensuite une formation intensive : théorie sur la sécurité/tickets et pratique sur le terrain." },
+    { vraag: "2.7 Décrivez votre rôle/vos tâches/vos responsabilités !", antwoord: "Ma priorité est la sécurité (fermeture des portes, départ). Ensuite, je contrôle les titres de transport, j'informe les voyageurs et je gère les problèmes." },
+    { vraag: "2.8 Comment se passe une journée ordinaire de travail ?", antwoord: "Je vérifie mon planning, je prends mon matériel. Je rejoins mon train, je vérifie la sécurité, je fais le départ et ensuite je contrôle les billets." },
+
+    // 3. Horaires
+    { vraag: "3.1 Qu’est-ce qu’être « en série », « hors-série », « planton », « en service léger » ?", antwoord: "En série: Horaires fixes. Hors-série: Horaires variables. Planton: En réserve au dépôt. Service léger: Moins d'heures (médical)." },
+    { vraag: "3.2 Quels sont vos horaires de travail ?", antwoord: "C'est très variable. Parfois je commence à 4h, parfois je finis à 1h du matin. Je travaille aussi les samedis, dimanches et jours fériés." },
+    { vraag: "3.3 Aimez-vous ce rythme de travail ? Est-ce compatible avec votre vie sociale ?", antwoord: "On s'habitue. L'avantage c'est d'avoir congé en semaine. Mais il faut bien s'organiser avec la famille pour les week-ends." },
+
+    // 4. Materiel
+    { vraag: "4.1 De quel matériel l’accompagnateur a-t-il besoin pour travailler ?", antwoord: "Ma tablette (IBIS) pour les horaires, ma pince pour valider, mon sifflet pour le départ et ma clé de Berne pour les portes." },
+    { vraag: "4.2 Décrivez votre uniforme ! En êtes-vous satisfait ?", antwoord: "Pantalon bleu, chemise, cravate, veste SNCB. Je suis satisfait car il est confortable et les voyageurs me reconnaissent tout de suite." },
+    { vraag: "4.3 Quels sont les différents types de train qui existent à la SNCB ?", antwoord: "Il y a les automotrices (moteurs intégrés, ex: Desiro) et les trains tractés (locomotive + voitures). Les systèmes de portes sont différents." },
+    { vraag: "4.4 Dans quel type de matériel préférez-vous travailler ? Pourquoi ?", antwoord: "Je préfère les modernes (Desiro, M7). Ils sont confortables, il y a la climatisation et de meilleures informations pour les voyageurs." },
+
+    // 5. Controle
+    { vraag: "5.1 Comment contrôlez-vous un titre de transport ?", antwoord: "Je salue, je demande le titre, je vérifie la date et le trajet, je scanne/poinçonne et je souhaite un bon voyage." },
+    { vraag: "5.2 Que faites-vous si un voyageur n’est pas en ordre ?", antwoord: "Je reste calme et poli. J'explique le problème. Je propose de payer le tarif à bord ou je fais un constat (C170)." },
+    { vraag: "5.2.1 Pas de ticket", antwoord: "Il doit payer le billet + supplément (Tarif à Bord). S'il refuse, je rédige un constat (C170) avec sa carte d'identité." },
+    { vraag: "5.2.2 Pas d’argent - pas de carte d’identité", antwoord: "Si je ne peux pas l'identifier, je peux demander l'assistance de Securail ou de la Police pour vérifier son identité." },
+    { vraag: "5.2.3 A rempli son multi dans le train ...", antwoord: "C'est interdit. Le Multi doit être rempli avant de monter. Normalement c'est une amende, mais je peux être flexible si c'est la première fois." },
+    { vraag: "5.3 Quels sont les types de fraude les plus fréquents ?", antwoord: "Pas de billet, billet non daté, abonnement oublié, ou voyager en 1ère classe avec un billet 2ème." },
+    { vraag: "5.4 Quelles sont les amendes les plus fréquentes ?", antwoord: "Le constat (C170) est de 75€ (ou 90€ si envoyé à domicile). Souvent pour 'défaut de titre de transport'." },
+    { vraag: "5.5 L’amende est-elle toujours justifiée ?", antwoord: "Oui, si les règles ne sont pas respectées. Mais je peux faire juste un avertissement verbal si le voyageur est de bonne foi." },
+    { vraag: "5.6 Quelle est la suite accordée par la SNCB à vos amendes ?", antwoord: "Je transmets les données au bureau. Ils envoient une lettre pour payer. S'il ne paie pas, ça va chez l'huissier." },
+    { vraag: "5.7 Êtes-vous un accompagnateur sévère ?", antwoord: "Non, je suis juste. J'applique le règlement mais je reste humain. Le but n'est pas de punir, mais que tout le monde paie sa place." },
+    { vraag: "5.8 Repérez-vous un fraudeur à son attitude ?", antwoord: "Oui, souvent. Ils évitent mon regard, font semblant de dormir, ou changent de place quand ils me voient." },
+    { vraag: "5.9 Quels sont les types de fraudeurs les plus fréquents ?", antwoord: "Pas de profil type. Étudiants, travailleurs, touristes... Souvent ils espèrent ne pas être contrôlés sur un court trajet." },
+    { vraag: "5.10 Y a-t-il souvent des resquilleurs dans les toilettes ?", antwoord: "Oui. Si quelqu'un reste trop longtemps quand j'arrive, je frappe et j'attends qu'il sorte pour contrôler." },
+    { vraag: "5.11 Faites-vous toujours le contrôle?", antwoord: "J'essaie. Mais si le train est bondé (heure de pointe), c'est impossible. La sécurité est prioritaire sur le contrôle." },
+    { vraag: "5.12 A part les titres de transport, que contrôlez-vous aussi ?", antwoord: "Je vérifie la propreté, les portes, la température, l'éclairage et les écrans d'information." },
+    { vraag: "5.13 Quelles informations vous demandent les voyageurs ?", antwoord: "Ce train s'arrête à X ? On arrive quand ? Quel quai pour ma correspondance ? Pourquoi le retard ?" },
+
+    // 6. Titres de transport
+    { vraag: "6.1 Quels sont les titres de transport les plus vendus ?", antwoord: "Standard Ticket, Weekend Ticket, Youth Ticket, Senior Ticket et les abonnements." },
+    { vraag: "6.2 Quels documents doit avoir le voyageur pour justifier un titre ?", antwoord: "Le billet (papier ou numérique) et parfois la carte d'identité (pour prouver l'âge ou l'abonnement)." },
+    { vraag: "6.3 Quels sont les billets « à réduction » ?", antwoord: "Famille Nombreuse, Intervention Majorée (BIM), Militaires, Journalistes." },
+    { vraag: "6.4 Comment faut-il remplir correctement les « Multi» ?", antwoord: "Écrire jour, date, départ et arrivée en toutes lettres. Pas de ratures. Tout écrire AVANT de monter." },
+    { vraag: "6.5 Que peut faire un voyageur s’il a perdu son titre ?", antwoord: "Il doit en acheter un nouveau. Un billet perdu est considéré comme inexistant." },
+    { vraag: "6.6 Que peut faire un voyageur avec un billet non utilisé ?", antwoord: "S'il n'est pas validé, il peut parfois demander un remboursement au guichet (selon les conditions)." },
+    { vraag: "6.7 Que peut faire un voyageur qui a oublié son abonnement ?", antwoord: "Je fais un constat. Il a 14 jours pour montrer son abonnement au guichet. Il ne paiera que des frais administratifs." },
+    { vraag: "6.8 Où et comment acheter un titre de transport ?", antwoord: "Sur l'application SNCB, sur le site web, aux automates dans les gares, ou aux guichets." },
+    { vraag: "6.9 Comment êtes-vous informé sur les nouveaux titres ?", antwoord: "Via ma tablette (digital), les briefings au dépôt, ou les e-mails internes de la SNCB." },
+    { vraag: "6.10 La SNCB a-t-elle récemment lancé un nouveau produit ?", antwoord: "Oui, par exemple le 'Flex Abonnement' pour le télétravail (2 ou 3 jours par semaine)." },
+    { vraag: "6.11 Quelles sont les offres temporaires annuelles ?", antwoord: "Le 'Duo Ticket' (2 billets pour 1) ou des promotions pendant les vacances (Winter Promo)." },
+    { vraag: "6.12 Peut-on acheter un billet de train longtemps à l’avance ?", antwoord: "Oui, pour le national : 30 jours à l'avance. Pour l'international (TGV) : plusieurs mois à l'avance." },
+    { vraag: "6.13 Si le voyageur n’a pas de titre, que doit-il faire ?", antwoord: "Venir me trouver AVANT ou tout de suite après le départ pour acheter au Tarif à Bord. Sinon, le supplément est plus cher." },
+    { vraag: "6.14 Faut-il toujours payer un supplément dans le train ?", antwoord: "Oui, sauf si le voyageur monte dans une gare où il n'y a pas d'automate ou si l'automate était en panne." },
+
+    // 7. Lignes
+    { vraag: "7.1 Quelles lignes faites-vous ?", antwoord: "Je travaille sur les lignes qui partent de mon dépôt (ex: Bruxelles-Anvers). Je vais un peu partout en Belgique." },
+    { vraag: "7.2 Quelles lignes préférez-vous ou détestez-vous ?", antwoord: "Je préfère les lignes IC (InterCity) car les trajets sont plus longs et calmes. J'aime moins les lignes L (Omnibus) car il y a trop d'arrêts." },
+    { vraag: "7.3 Y a-t-il des lignes plus dangereuses ?", antwoord: "Oui, certaines lignes autour des grandes villes tard le soir peuvent être plus difficiles à cause de l'insécurité ou de l'alcool." },
+
+    // 8. Problemes
+    { vraag: "8.1 Quels sont les problèmes les plus fréquents avec les voyageurs ?", antwoord: "Les discussions sur la validité du ticket, les nuisances sonores, les pieds sur les sièges et parfois l'agressivité." },
+    { vraag: "8.2 Pourquoi les voyageurs sont-ils agressifs ?", antwoord: "Souvent à cause d'un retard, d'un train supprimé, ou parce qu'ils n'ont pas de billet et ne veulent pas payer." },
+    { vraag: "8.3 Les voyageurs ont-ils parfois « raison » d’être agressifs ?", antwoord: "Ils ont raison d'être mécontents si le service n'est pas bon, mais l'agressivité verbale ou physique n'est jamais acceptable." },
+    { vraag: "8.4 Avez-vous déjà été victime d’une agression ?", antwoord: "Oui, verbalement, des insultes. C'est courant mais je reste calme. (OU: Non, heureusement)." },
+    { vraag: "8.5 Quels sont vos recours si vous êtes menacé ?", antwoord: "Je peux appeler le SOC pour demander l'intervention de Securail ou de la Police. Je peux aussi porter plainte." },
+    { vraag: "8.6 En êtes-vous satisfait ?", antwoord: "Oui, le système de soutien est bon. On a aussi un support psychologique après une agression grave." },
+    { vraag: "8.7 Que fait la SNCB pour améliorer votre sécurité ?", antwoord: "Il y a plus de caméras dans les trains et les gares, plus d'agents Securail, et des campagnes de sensibilisation." },
+    { vraag: "8.8 Êtes-vous préparé au problème d’agression ?", antwoord: "Oui, nous avons suivi des cours de 'gestion de conflits' pour apprendre à désescalader une situation tendue." },
+    { vraag: "8.9 Que faites-vous si un voyageur est malade ?", antwoord: "Je demande si un médecin est présent. Si c'est grave, j'appelle le SOC pour faire venir une ambulance à la prochaine gare." },
+    { vraag: "8.10 Êtes-vous préparé à cette situation (médicale) ?", antwoord: "Oui, nous avons tous le brevet de secourisme. Nous savons faire les premiers gestes (RCP, défibrillateur)." },
+    { vraag: "8.11 Que faites-vous face à un voyageur ivre ?", antwoord: "S'il est calme, je le laisse dormir. S'il est agressif, je demande l'intervention de la police pour le faire descendre." },
+    { vraag: "8.12 Si un voyageur a oublié un objet, que doit-il faire ?", antwoord: "Il doit remplir un formulaire 'objets perdus' sur le site web de la SNCB." },
+    { vraag: "8.13 Que faites-vous des objets trouvés ?", antwoord: "Si je trouve un objet, je mets une étiquette avec les détails et je le dépose au guichet de la gare terminus." },
+    { vraag: "8.14 Si un voyageur est dévoyé (perdu), comme l’aidez-vous ?", antwoord: "Je le rassure. Je regarde sur mon application quel est le meilleur itinéraire et je lui explique." },
+    { vraag: "8.15 Que faites-vous si un voyageur est en 1ère avec un billet 2ème ?", antwoord: "Je lui demande poliment de changer de place vers la 2ème classe. Ou il peut payer un surclassement." },
+    { vraag: "8.16 Quand et comment déclassez-vous une voiture ?", antwoord: "Si la 2ème classe est pleine et la 1ère est vide, je peux décider de 'déclasser'. Je fais une annonce au micro." },
+    { vraag: "8.17 De quoi se plaignent les voyageurs ?", antwoord: "Des retards, des trains trop courts (pas de place assis), des toilettes sales, et de la température." },
+    { vraag: "8.18 Comment réagissent les voyageurs en cas de problème ?", antwoord: "La plupart sont compréhensifs mais résignés. D'autres s'énervent ou viennent se plaindre chez moi." },
+    { vraag: "8.19 (Train) Quels sont les problèmes matériels fréquents ?", antwoord: "Des portes qui ne s'ouvrent pas, des toilettes bouchées, ou le système d'annonce sonore qui ne fonctionne pas." },
+    { vraag: "8.20 En cas d’accident et/ou de suicide que devez-vous faire ?", antwoord: "Je ne laisse personne descendre. Je rassure les voyageurs. Je contacte le conducteur et le SOC." },
+    { vraag: "8.21 En cas de collision avec un « obstacle » ?", antwoord: "Le train s'arrête. Je vérifie s'il y a des blessés à bord. Je communique avec le conducteur pour la suite." },
+    { vraag: "8.22 Un train peut-il être supprimé ? Pour quelle raison ?", antwoord: "Oui. En cas de panne technique, d'absence du personnel, ou d'incident grave sur la ligne." },
+    { vraag: "8.23 Que faites-vous si une porte ne s’ouvre pas ?", antwoord: "Je colle un autocollant 'Dérangé', je la verrouille et je signale le problème via ma tablette." },
+    { vraag: "8.24 Quelles sont les causes des retards de trains ?", antwoord: "Les problèmes techniques, les travaux, les incidents de personnes et les correspondances." },
+    { vraag: "8.25 A quelles compensations a droit le voyageur (retard) ?", antwoord: "Si le retard est de plus de 60 minutes, il a droit à une compensation. Il doit remplir un formulaire sur le site SNCB." },
+    { vraag: "8.26 Que faites-vous si le chauffage/airco ne fonctionne pas ?", antwoord: "J'essaie de déplacer les voyageurs. Si tout le train est en panne, je signale le problème au conducteur." },
+    { vraag: "8.27 Avez-vous eu un incident grave ?", antwoord: "Non, jamais d'incident grave jusqu'à présent. (OU: Oui, un accident à un passage à niveau)." },
+
+    // 9. Securite
+    { vraag: "9.1 Qu’est-ce qui est le plus important : la sécurité ou le contrôle?", antwoord: "La sécurité. C'est la priorité absolue. Si la sécurité n'est pas assurée, le train ne peut pas partir." },
+    { vraag: "9.2 « Je suis responsable de la sécurité », qu’est-ce que ça signifie ?", antwoord: "Je dois veiller à ce que les portes soient fermées, qu'aucun voyageur ne soit en danger, et réagir en cas d'incident." },
+    { vraag: "9.3 Qu’est-ce que « préparer le train » ?", antwoord: "C'est vérifier le train avant le premier départ : tester les freins, vérifier les portes, l'éclairage et la propreté." },
+    { vraag: "9.4 Comment donnez-vous le départ ?", antwoord: "Je vérifie le quai, je ferme les portes. Je vérifie qu'il n'y a personne coincé. Je donne le signal au conducteur." },
+    { vraag: "9.5 Le départ, est-il un moment dangereux ?", antwoord: "Oui, c'est critique. Un voyageur peut essayer de monter au dernier moment. Je surveille jusqu'à la fin du quai." },
+    { vraag: "9.6 Pour quelles raisons peut-on tirer le signal d’alarme ?", antwoord: "Uniquement en cas de danger immédiat pour les personnes : incendie, agression très grave, ou problème médical." },
+    { vraag: "9.7 Que signifie « isoler une porte » ?", antwoord: "C'est la verrouiller mécaniquement. Je le fais si elle est défectueuse et ne ferme plus correctement." },
+    { vraag: "9.8 Sécurité trains longs / quai courbe ?", antwoord: "Je demande l'aide d'un collègue pour surveiller l'autre partie, ou je descends sur le quai pour avoir une meilleure vue." },
+    { vraag: "9.9 Qu’est-ce que le SOC ?", antwoord: "C'est le Security Operations Center. La centrale de sécurité de la SNCB disponible 24h/24 pour les urgences." },
+
+    // 10. Examen SELOR
+    { vraag: "10.1 Est-ce la première fois que vous présentez l’examen ?", antwoord: "Oui, c'est la première fois. (OU: Non, j'avais échoué à cause du stress. J'ai beaucoup pratiqué depuis)." },
+    { vraag: "10.2 Comment avez-vous préparé cet examen ?", antwoord: "J'ai révisé mon vocabulaire ferroviaire, lu les procédures et pratiqué la conversation avec des collègues francophones." },
+    { vraag: "10.3 Que faites-vous au cours de français ?", antwoord: "Nous faisons des exercices de grammaire, apprenons le vocabulaire métier et faisons des jeux de rôle." },
+    { vraag: "10.4 Pourquoi présentez-vous cet examen ?", antwoord: "Pour être nommé statutaire et obtenir la prime de bilinguisme. C'est aussi important pour bien servir les clients." },
+    { vraag: "10.5 Avez-vous (souvent) l’occasion de parler français ?", antwoord: "Oui, je travaille souvent à Bruxelles ou sur des lignes vers la Wallonie, donc je parle français tous les jours." },
+    { vraag: "10.6 Trouvez-vous nécessaire d’être bilingue ?", antwoord: "Oui, absolument. C'est un service public belge. On doit pouvoir aider tout le monde. C'est une marque de respect." },
+    { vraag: "10.7 Qu’allez-vous faire après l’examen ?", antwoord: "Je vais continuer à pratiquer mon français pour ne pas perdre mon niveau." },
+
+    // 11. Divers
+    { vraag: "11.1 Racontez-nous une anecdote !", antwoord: "Une fois, un chien est monté dans le train tout seul. Il était très gentil. On l'a gardé en cabine jusqu'à l'arrivée de la police." },
+    { vraag: "11.2 Vous souvenez-vous de votre premier service ?", antwoord: "Oui, j'étais très nerveux. J'avais peur de me tromper. Mais mon moniteur m'a bien aidé et tout s'est bien passé." },
+
+    // 12. Employeur
+    { vraag: "12.1 Quelle est l’actualité SNCB du moment ?", antwoord: "On parle des nouveaux trains M7 double étage, des nouveaux horaires de décembre et du recrutement." },
+    { vraag: "12.2 Que changeriez-vous à la SNCB ?", antwoord: "J'aimerais qu'il y ait moins de retards pour que les voyageurs soient contents. Et des horaires plus réguliers pour la santé." },
+
+    // 13. Le jour J (Volledig)
+    { vraag: "13.1 Il s’agit d’un entretien relatif à des sujets liés au travail. Réaction ?", antwoord: "C'est noté. Je vais me concentrer sur la clarté de mon français, tout en parlant de mon expérience professionnelle à la SNCB." },
+    { vraag: "13.2 Conseils : Comment allez-vous vous comporter ?", antwoord: "Je veillerai à rester calme, poli et souriant. Je prendrai le temps de réfléchir avant de répondre pour faire des phrases correctes." },
+    { vraag: "13.3 L’entretien n’aborde que des situations de travail. D'accord ?", antwoord: "D'accord. Je resterai professionnel et je parlerai uniquement de mon métier, sauf si le jury me pose une question personnelle spécifique." },
+    { vraag: "13.4 Avez-vous préparé des questions clients ?", antwoord: "J'ai préparé des réponses aux questions fréquentes des voyageurs, comme les retards, les correspondances et les types de billets." },
+    { vraag: "13.5 Allez-vous donner des réponses standard ?", antwoord: "Non, je vais utiliser des exemples réels de mon quotidien pour rendre mes réponses vivantes et concrètes." },
+    { vraag: "13.6 Donnez des détails et des exemples, si nécessaire.", antwoord: "Si je sens que ma réponse est trop courte, j'ajouterai une anecdote ou un détail précis sur une procédure." }
+  ];
+
+  let index = 0;
+  let timerInterval;
+  let zelftestTimerInterval;
+  let zelftestIndex = 0;
+
+  // =========================
+  // TAB NAV
+  // =========================
+  function showTab(tabId, btn) {
+    clearInterval(timerInterval);
+    clearInterval(zelftestTimerInterval);
+    document.getElementById("zelftestTimer").innerText = "50 sec";
+    document.getElementById("timer").innerText = "00:60";
+
+    document.querySelectorAll("section").forEach(s => s.classList.remove("active"));
+    document.querySelectorAll("nav button").forEach(b => b.classList.remove("active"));
+    document.getElementById(tabId).classList.add("active");
+    if (btn) btn.classList.add("active");
+
+    if (tabId === "zelftest") {
+      // Optioneel: meteen timer starten of wachten op klik
+    }
+  }
+
+  // =========================
+  // OEFENEN
+  // =========================
+  function toggleAntwoord() {
+    const el = document.getElementById("oefenAntwoord");
+    el.style.display = (el.style.display === "none") ? "block" : "none";
+  }
+
+  function volgendeVraag() {
+    index = (index + 1) % vragen.length;
+    updateOefen();
+  }
+
+  function vorigeVraag() {
+    index = (index - 1 + vragen.length) % vragen.length;
+    updateOefen();
+  }
+
+  function updateOefen() {
+    const v = vragen[index];
+    document.getElementById("oefenVraag").innerText = v.vraag;
+    document.getElementById("oefenAntwoord").innerText = v.antwoord;
+    document.getElementById("oefenAntwoord").style.display = "none";
+    
+    // Counter update
+    document.getElementById("oefenCounter").innerText = index + 1;
+    document.getElementById("oefenTotal").innerText = vragen.length;
+  }
+
+  // =========================
+  // ZELFTEST
+  // =========================
+  function initZelftest() {
+    const ul = document.getElementById("zelftestVragen");
+    ul.innerHTML = "";
+
+    vragen.forEach((v, i) => {
+      const li = document.createElement("li");
+      li.style.cursor = "pointer";
+      li.innerText = v.vraag.substring(0, 50) + "..."; // Korte preview
+      if(v.vraag.length < 50) li.innerText = v.vraag;
+      
+      li.onclick = () => {
+        // Highlight active item
+        document.querySelectorAll("#zelftestVragen li").forEach(item => item.classList.remove("selected"));
+        li.classList.add("selected");
+        selectZelftestQuestion(i);
+      };
+      ul.appendChild(li);
+    });
+  }
+
+  function startZelftestTimer() {
+    clearInterval(zelftestTimerInterval);
+    let tijd = 50;
+    const el = document.getElementById("zelftestTimer");
+    el.innerText = "Tijd: 50 sec";
+    el.style.color = "#d32f2f";
+
+    zelftestTimerInterval = setInterval(() => {
+      tijd--;
+      el.innerText = "Tijd: " + tijd + " sec";
+      if (tijd <= 0) {
+        clearInterval(zelftestTimerInterval);
+        el.innerText = "TIJD OM! Stop met spreken.";
+        el.style.color = "#000";
+      }
+    }, 1000);
+  }
+
+  function selectZelftestQuestion(i) {
+    zelftestIndex = i;
+    const v = vragen[zelftestIndex];
+    document.getElementById("zelftestActiveVraag").innerText = v.vraag;
+    startZelftestTimer();
+    
+    // Scroll naar boven in de sectie
+    document.getElementById("zelftest").scrollIntoView();
+  }
+
+  // =========================
+  // SIMULATIE
+  // =========================
+  function startSimulatie() {
+    clearInterval(timerInterval);
+    document.getElementById("simAudioBtn").style.display = "none";
+
+    const randomIndex = Math.floor(Math.random() * vragen.length);
+    const v = vragen[randomIndex];
+
+    document.getElementById("simVraag").innerText = v.vraag;
+    document.getElementById("simAntwoord").innerText = v.antwoord;
+    document.getElementById("simAntwoord").style.display = "none";
+
+    let tijd = 60;
+    const el = document.getElementById("timer");
+    el.innerText = "00:60";
+    el.style.color = "#d32f2f";
+
+    timerInterval = setInterval(() => {
+      tijd--;
+      let sec = tijd < 10 ? "0" + tijd : tijd;
+      el.innerText = "00:" + sec;
+      if (tijd <= 10) el.style.color = "red";
+      
+      if (tijd <= 0) {
+        clearInterval(timerInterval);
+        el.innerText = "TIJD OM!";
+        el.style.color = "black";
+      }
+    }, 1000);
+  }
+
+  function toonSimAntwoord() {
+    document.getElementById("simAntwoord").style.display = "block";
+    document.getElementById("simAudioBtn").style.display = "flex";
+    clearInterval(timerInterval); // Stop timer als je eerder klaar bent
+  }
+
+  // =========================
+  // SPEECH (TTS)
+  // =========================
+  let cachedVoices = [];
+
+  function loadVoices() {
+    cachedVoices = window.speechSynthesis ? window.speechSynthesis.getVoices() : [];
+  }
+
+  if ("speechSynthesis" in window) {
+    loadVoices();
+    window.speechSynthesis.onvoiceschanged = loadVoices;
+  }
+
+  function pickFrenchVoice() {
+    const voices = cachedVoices || [];
+    // Voorkeur: Frans-België, anders Frankrijk
+    return voices.find(v => v.lang === "fr-BE") || 
+           voices.find(v => v.lang === "fr-FR") || 
+           voices.find(v => v.lang.startsWith("fr"));
+  }
+
+  function speakText(text) {
+    if (!text) return;
+    if (!window.speechSynthesis) {
+      alert("Spraak wordt niet ondersteund op dit toestel.");
+      return;
+    }
+    window.speechSynthesis.cancel(); // Stop vorige
+    const utter = new SpeechSynthesisUtterance(text);
+    
+    const voice = pickFrenchVoice();
+    if (voice) utter.voice = voice;
+    else utter.lang = "fr-FR"; // Fallback
+
+    utter.rate = 0.9; // Iets trager voor duidelijkheid
+    window.speechSynthesis.speak(utter);
+  }
+  
+  // Functie: Verwijdert nummering aan het begin (bv. "1.1 " of "5.2.3 ")
+  function stripPrefixForSpeech(text) {
+    // Regex zoekt naar cijfers en punten aan het begin, gevolgd door spatie
+    return text.replace(/^[0-9.]+\s+/, "");
+  }
+
+  // =========================
+  // AUDIO RECORDING
+  // =========================
+  let mediaRecorder;
+  let audioChunks = [];
+  let audioBlobUrl;
+
+  async function startRecording() {
+    const status = document.getElementById("recStatus");
+    status.innerText = "Toegang vragen...";
+    
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      status.innerText = "Opnemen niet ondersteund in deze browser.";
+      return;
+    }
+
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      mediaRecorder = new MediaRecorder(stream);
+      audioChunks = [];
+
+      mediaRecorder.ondataavailable = event => {
+        audioChunks.push(event.data);
+      };
+
+      mediaRecorder.onstop = () => {
+        const audioBlob = new Blob(audioChunks, { type: 'audio/mp4' }); // mp4 werkt vaak beter op iOS
+        if (audioBlobUrl) URL.revokeObjectURL(audioBlobUrl);
+        audioBlobUrl = URL.createObjectURL(audioBlob);
+        const audioEl = document.getElementById("recAudio");
+        audioEl.src = audioBlobUrl;
+        audioEl.style.display = "block";
+        
+        document.getElementById("btnRecPlay").disabled = false;
+        status.innerText = "Klaar. Druk op Luister.";
+      };
+
+      mediaRecorder.start();
+      document.getElementById("btnRecStart").disabled = true;
+      document.getElementById("btnRecStop").disabled = false;
+      document.getElementById("btnRecPlay").disabled = true;
+      status.innerText = "🔴 Aan het opnemen...";
+
+    } catch (err) {
+      console.error(err);
+      status.innerText = "Fout: Microfoon toegang geweigerd.";
+    }
+  }
+
+  function stopRecording() {
+    if (mediaRecorder && mediaRecorder.state !== "inactive") {
+      mediaRecorder.stop();
+      document.getElementById("btnRecStart").disabled = false;
+      document.getElementById("btnRecStop").disabled = true;
+    }
+  }
+
+  function playRecording() {
+    const audioEl = document.getElementById("recAudio");
+    audioEl.play();
+  }
+
+  // =========================
+  // HELPERS
+  // =========================
+  function toggleHelp(id) {
+    const el = document.getElementById(id);
+    el.style.display = (el.style.display === "none") ? "block" : "none";
+  }
+
+  // Start
+  updateOefen();
+  initZelftest();
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SELOR Prep B2 (Full Text)</title>
+
+<link rel="apple-touch-icon" href="icon.png">
+
+<style>
+    /* Algemene opmaak */
+    html {
+        scroll-behavior: smooth;
+    }
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        background-color: #f4f4f9;
+        margin: 0;
+        padding: 0;
+        color: #333;
+        line-height: 1.5;
+    }
+
+    /* Header */
+    header {
+        background-color: #006ab3; /* NMBS Blauw */
+        color: white;
+        text-align: center;
+        padding: 15px 10px;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    h1 { margin: 0; font-size: 1.1rem; font-weight: 700; }
+    p.sub { margin: 2px 0 0; font-size: 0.8rem; opacity: 0.9; }
+
+    /* Reset Knop Container */
+    .controls {
+        text-align: center;
+        margin: 15px 0 5px 0;
+    }
+
+    /* Reset Knop Stijl */
+    .reset-btn {
+        background-color: #e0e0e0;
+        color: #333;
+        border: 1px solid #ccc;
+        padding: 8px 16px;
+        font-size: 0.9rem;
+        border-radius: 20px;
+        cursor: pointer;
+        font-weight: bold;
+        box-shadow: 0 2px 2px rgba(0,0,0,0.1);
+    }
+    .reset-btn:active {
+        background-color: #d0d0d0;
+        transform: translateY(1px);
+    }
+
+    /* Container */
+    .container {
+        max-width: 100%;
+        padding: 10px;
+        padding-bottom: 80px;
+    }
+
+    /* Zwevende Terug-knop (Rechtsonder) */
+    #myBtn {
+        display: none;
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 99;
+        border: none;
+        outline: none;
+        background-color: #006ab3;
+        color: white;
+        cursor: pointer;
+        padding: 0;
+        border-radius: 50%;
+        font-size: 20px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        width: 50px;
+        height: 50px;
+        line-height: 50px;
+        text-align: center;
+    }
+
+    /* Accordeon knop (Titels) */
+    .accordion {
+        background-color: #ffffff;
+        color: #006ab3;
+        cursor: pointer;
+        padding: 15px;
+        width: 100%;
+        border: none;
+        text-align: left;
+        outline: none;
+        font-size: 1rem;
+        font-weight: bold;
+        transition: 0.3s;
+        margin-bottom: 8px;
+        border-radius: 8px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        line-height: 1.3;
+    }
+
+    .active, .accordion:hover {
+        background-color: #e6f0fa;
+    }
+
+    .accordion:after {
+        content: '\002B'; /* Plus */
+        font-size: 1.5rem;
+        margin-left: 10px;
+        flex-shrink: 0; 
+    }
+
+    .active:after {
+        content: "\2212"; /* Min */
+    }
+
+    /* Paneel met vragen */
+    .panel {
+        padding: 0 5px;
+        background-color: #f4f4f9;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease-out;
+        margin-bottom: 5px;
+    }
+
+    /* Tussenkopjes in panelen (voor A en B) */
+    .subheader {
+        background-color: #daeefc;
+        color: #004d80;
+        padding: 10px;
+        margin: 15px 0 10px 0;
+        border-radius: 5px;
+        font-weight: bold;
+        font-size: 1rem;
+        text-align: center;
+        border: 1px solid #b3d7ff;
+    }
+
+    /* Vraag & Antwoord Kaart */
+    .qa-card {
+        background-color: white;
+        padding: 15px;
+        margin-bottom: 12px;
+        border-radius: 8px;
+        border-left: 5px solid #006ab3;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    }
+
+    .q-num {
+        color: #999;
+        font-size: 0.75rem;
+        font-weight: bold;
+        display: block;
+        margin-bottom: 5px;
+        text-transform: uppercase;
+    }
+
+    .question {
+        font-weight: 700;
+        color: #d32f2f;
+        margin-bottom: 10px;
+        display: block;
+        font-size: 1rem;
+    }
+
+    .answer {
+        color: #222;
+        background-color: #f1f4f8;
+        padding: 10px;
+        border-radius: 6px;
+        font-size: 0.95rem;
+    }
+
+</style>
+</head>
+<body>
+
+<header>
+    <h1>SELOR (B2)</h1>
+    <p class="sub">Volledige vragenlijst & Korte antwoorden</p>
+</header>
+
+<div class="controls">
+    <button class="reset-btn" onclick="collapseAll()">&#x21bb; Alles sluiten / Reset</button>
+</div>
+
+<!-- De Terug-naar-boven knop -->
+<button onclick="topFunction()" id="myBtn" title="Terug naar boven">&#8679;</button>
+
+<div class="container">
+
+    <!-- Hoofdstuk 1 -->
+    <button class="accordion">1. Questions sur votre parcours professionnel (6)</button>
+    <div class="panel">
+        <div class="qa-card">
+            <span class="q-num">Vraag 1.1</span>
+            <span class="question">Quelle est votre profession actuelle ? Depuis quand exercez-vous cette fonction ?</span>
+            <div class="answer">Je suis accompagnateur de train à la SNCB. Je fais ce métier depuis [X] ans. J’aime beaucoup le contact avec les clients et le fait de bouger tout le temps.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 1.2</span>
+            <span class="question">Dans quel dépôt travaillez-vous ? Est-ce loin de votre domicile ?</span>
+            <div class="answer">Je travaille au dépôt de [Naam]. C'est à environ [X] minutes de chez moi. C'est assez proche, donc c'est facile pour organiser ma vie privée.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 1.3</span>
+            <span class="question">Êtes-vous satisfait ?</span>
+            <div class="answer">Oui, je suis satisfait. Le travail est utile et varié. J'aime l'ambiance avec les collègues. Parfois c'est stressant à cause des retards, mais globalement j'aime mon job.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 1.4</span>
+            <span class="question">Comment êtes-vous entré à la SNCB ? Qui vous a donné l’idée/l’envie ?</span>
+            <div class="answer">J'ai vu une offre d'emploi sur internet (ou : un ami m'en a parlé). Je cherchais un emploi stable et j'aime le service public. J'ai donc postulé.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 1.5</span>
+            <span class="question">Quelles études avez-vous faites ? Pourquoi n’avez-vous pas continué dans cette voie ?</span>
+            <div class="answer">J’ai étudié [Uw richting]. Mais je ne voulais pas rester assis dans un bureau. Je voulais un travail plus dynamique avec du contact humain.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 1.6</span>
+            <span class="question">Est-ce votre premier travail ? Sinon, qu’avez-vous fait avant ? Pourquoi avez-vous changé ?</span>
+            <div class="answer">Non, avant j'ai travaillé comme [Job]. J'ai changé parce que je voulais plus de sécurité d'emploi et de meilleures conditions.</div>
+        </div>
+    </div>
+
+    <!-- Hoofdstuk 2 -->
+    <button class="accordion">2. La profession d’accompagnateur de train (8)</button>
+    <div class="panel">
+        <div class="qa-card">
+            <span class="q-num">Vraag 2.1</span>
+            <span class="question">Quelles sont les qualités d’un bon accompagnateur de train ?</span>
+            <div class="answer">Il faut être calme, poli et très ponctuel. Il faut aussi bien connaître les règles de sécurité et savoir gérer le stress en cas de problème.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 2.2</span>
+            <span class="question">Quels sont les avantages de travailler à la SNCB ?</span>
+            <div class="answer">Les avantages sont la sécurité de l'emploi (statutaire), le salaire correct, les congés et la possibilité de voyager gratuitement en train.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 2.3</span>
+            <span class="question">Quels sont les avantages et les désavantages de votre travail ?</span>
+            <div class="answer"><strong>Avantages:</strong> La liberté et le contact social.<br><strong>Désavantages:</strong> Les horaires irréguliers (tôt/tard/week-end) et parfois l'agressivité des voyageurs.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 2.4</span>
+            <span class="question">Prenez-vous le train en dehors de votre travail ? Quelles sont les facilités de circulation dont vous ou votre famille pouvez bénéficier ?</span>
+            <div class="answer">Oui, je prends souvent le train. Ma famille proche (conjoint, enfants) voyage aussi gratuitement en Belgique. C’est un très grand avantage.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 2.5</span>
+            <span class="question">Avez-vous des possibilités d’avancement dans votre carrière et avez-vous l’intention d’évoluer? Expliquez !</span>
+            <div class="answer">Oui, on peut devenir chef d'équipe ou formateur. Pour l'instant, je suis bien dans ma fonction, mais peut-être plus tard.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 2.6</span>
+            <span class="question">Comment devient-on accompagnateur de train ? (Recrutement – Formation)</span>
+            <div class="answer">D'abord des tests psychotechniques et médicaux. Ensuite une formation intensive : théorie sur la sécurité/tickets et pratique sur le terrain.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 2.7</span>
+            <span class="question">Décrivez votre rôle/vos tâches/vos responsabilités !</span>
+            <div class="answer">Ma priorité est la sécurité (fermeture des portes, départ). Ensuite, je contrôle les titres de transport, j'informe les voyageurs et je gère les problèmes.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 2.8</span>
+            <span class="question">Comment se passe une journée ordinaire de travail ?</span>
+            <div class="answer">Je vérifie mon planning, je prends mon matériel. Je rejoins mon train, je vérifie la sécurité, je fais le départ et ensuite je contrôle les billets.</div>
+        </div>
+    </div>
+
+    <!-- Hoofdstuk 3 -->
+    <button class="accordion">3. Questions sur les horaires de travail (3)</button>
+    <div class="panel">
+        <div class="qa-card">
+            <span class="q-num">Vraag 3.1</span>
+            <span class="question">Qu’est-ce qu’être « en série », « hors-série », « planton », « en service léger » ?</span>
+            <div class="answer">
+                <strong>En série:</strong> Horaires fixes.<br>
+                <strong>Hors-série:</strong> Horaires variables.<br>
+                <strong>Planton:</strong> En réserve au dépôt.<br>
+                <strong>Service léger:</strong> Moins d'heures (médical).
+            </div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 3.2</span>
+            <span class="question">Quels sont vos horaires de travail ?</span>
+            <div class="answer">C'est très variable. Parfois je commence à 4h, parfois je finis à 1h du matin. Je travaille aussi les samedis, dimanches et jours fériés.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 3.3</span>
+            <span class="question">Aimez-vous ce rythme de travail ? Est-ce compatible avec votre vie sociale/familiale ?</span>
+            <div class="answer">On s'habitue. L'avantage c'est d'avoir congé en semaine. Mais il faut bien s'organiser avec la famille pour les week-ends.</div>
+        </div>
+    </div>
+
+    <!-- Hoofdstuk 4 -->
+    <button class="accordion">4. Questions sur le materiel (4)</button>
+    <div class="panel">
+        <div class="qa-card">
+            <span class="q-num">Vraag 4.1</span>
+            <span class="question">De quel matériel l’accompagnateur a-t-il besoin pour travailler ? A quoi sert-il ?</span>
+            <div class="answer">Ma tablette (IBIS) pour les horaires, ma pince pour valider, mon sifflet pour le départ et ma clé de Berne pour les portes.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 4.2</span>
+            <span class="question">Décrivez votre uniforme ! En êtes-vous satisfait ? Justifiez !</span>
+            <div class="answer">Pantalon bleu, chemise, cravate, veste SNCB. Je suis satisfait car il est confortable et les voyageurs me reconnaissent tout de suite.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 4.3</span>
+            <span class="question">Quels sont les différents types de train qui existent à la SNCB ? Expliquez les différences entre eux !</span>
+            <div class="answer">Il y a les automotrices (moteurs intégrés, ex: Desiro) et les trains tractés (locomotive + voitures). Les systèmes de portes sont différents.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 4.4</span>
+            <span class="question">Dans quel type de matériel préférez-vous travailler ? Pourquoi ?</span>
+            <div class="answer">Je préfère les modernes (Desiro, M7). Ils sont confortables, il y a la climatisation et de meilleures informations pour les voyageurs.</div>
+        </div>
+    </div>
+
+    <!-- Hoofdstuk 5 -->
+    <button class="accordion">5. Questions sur le controle (16)</button>
+    <div class="panel">
+        <div class="qa-card">
+            <span class="q-num">Vraag 5.1</span>
+            <span class="question">Comment contrôlez-vous un titre de transport ?</span>
+            <div class="answer">Je salue, je demande le titre, je vérifie la date et le trajet, je scanne/poinçonne et je souhaite un bon voyage.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 5.2</span>
+            <span class="question">Que faites-vous si un voyageur n’est pas en ordre :</span>
+            <div class="answer">Je reste calme et poli. J'explique le problème. Je propose de payer le tarif à bord ou je fais un constat (C170).</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 5.2.1</span>
+            <span class="question">Pas de ticket</span>
+            <div class="answer">Il doit payer le billet + supplément (Tarif à Bord). S'il refuse, je rédige un constat (C170) avec sa carte d'identité.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 5.2.2</span>
+            <span class="question">Pas d’argent - pas de carte d’identité</span>
+            <div class="answer">Si je ne peux pas l'identifier, je peux demander l'assistance de Securail ou de la Police pour vérifier son identité.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 5.2.3</span>
+            <span class="question">A rempli son multi dans le train ...</span>
+            <div class="answer">C'est interdit. Le Multi doit être rempli avant de monter. Normalement c'est une amende, mais je peux être flexible si c'est la première fois.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 5.3</span>
+            <span class="question">Quels sont les types de fraude les plus fréquents avec un titre de transport ?</span>
+            <div class="answer">Pas de billet, billet non daté, abonnement oublié, ou voyager en 1ère classe avec un billet 2ème.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 5.4</span>
+            <span class="question">Quelles sont les amendes les plus fréquentes ?</span>
+            <div class="answer">Le constat (C170) est de 75€ (ou 90€ si envoyé à domicile). Souvent pour "défaut de titre de transport".</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 5.5</span>
+            <span class="question">L’amende est-elle toujours justifiée ?</span>
+            <div class="answer">Oui, si les règles ne sont pas respectées. Mais je peux faire juste un avertissement verbal si le voyageur est de bonne foi.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 5.6</span>
+            <span class="question">Quelle est la suite accordée par la SNCB à vos amendes ?</span>
+            <div class="answer">Je transmets les données au bureau. Ils envoient une lettre pour payer. S'il ne paie pas, ça va chez l'huissier.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 5.7</span>
+            <span class="question">Êtes-vous un accompagnateur sévère ?</span>
+            <div class="answer">Non, je suis juste. J'applique le règlement mais je reste humain. Le but n'est pas de punir, mais que tout le monde paie sa place.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 5.8</span>
+            <span class="question">Repérez-vous un fraudeur à son attitude ?</span>
+            <div class="answer">Oui, souvent. Ils évitent mon regard, font semblant de dormir, ou changent de place quand ils me voient.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 5.9</span>
+            <span class="question">Quels sont les types de fraudeurs les plus fréquents ? Pourquoi ?</span>
+            <div class="answer">Pas de profil type. Étudiants, travailleurs, touristes... Souvent ils espèrent ne pas être contrôlés sur un court trajet.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 5.10</span>
+            <span class="question">Y a-t-il souvent des resquilleurs dans les toilettes ?</span>
+            <div class="answer">Oui. Si quelqu'un reste trop longtemps quand j'arrive, je frappe et j'attends qu'il sorte pour contrôler.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 5.11</span>
+            <span class="question">Faites-vous toujours le contrôle? Est-ce toujours possible ? Expliquez !</span>
+            <div class="answer">J'essaie. Mais si le train est bondé (heure de pointe), c'est impossible. La sécurité est prioritaire sur le contrôle.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 5.12</span>
+            <span class="question">A part les titres de transport, que contrôlez-vous aussi dans le train ?</span>
+            <div class="answer">Je vérifie la propreté, les portes, la température, l'éclairage et les écrans d'information.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 5.13</span>
+            <span class="question">Quelles informations vous demandent les voyageurs ?</span>
+            <div class="answer">"Ce train s'arrête à X ?", "On arrive quand ?", "Quel quai pour ma correspondance ?", "Pourquoi le retard ?".</div>
+        </div>
+    </div>
+
+    <!-- Hoofdstuk 6 -->
+    <button class="accordion">6. Questions sur les titres de transport (14)</button>
+    <div class="panel">
+        <div class="qa-card">
+            <span class="q-num">Vraag 6.1</span>
+            <span class="question">Quels sont les titres de transport les plus vendus ?</span>
+            <div class="answer">Standard Ticket, Weekend Ticket, Youth Ticket, Senior Ticket et les abonnements.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 6.2</span>
+            <span class="question">Quels documents doit avoir le voyageur pour justifier l’utilisation d’un titre de transport (quel qu’il soit) ?</span>
+            <div class="answer">Le billet (papier ou numérique) et parfois la carte d'identité (pour prouver l'âge ou l'abonnement).</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 6.3</span>
+            <span class="question">Quels sont les billets « à réduction » ?</span>
+            <div class="answer">Famille Nombreuse, Intervention Majorée (BIM), Militaires, Journalistes.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 6.4</span>
+            <span class="question">Comment faut-il remplir correctement les « Multi» ?</span>
+            <div class="answer">Écrire jour, date, départ et arrivée en toutes lettres. Pas de ratures. Tout écrire <strong>avant</strong> de monter.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 6.5</span>
+            <span class="question">Que peut faire un voyageur s’il a perdu son titre de transport ?</span>
+            <div class="answer">Il doit en acheter un nouveau. Un billet perdu est considéré comme inexistant.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 6.6</span>
+            <span class="question">Que peut faire un voyageur avec un billet non utilisé ?</span>
+            <div class="answer">S'il n'est pas validé, il peut parfois demander un remboursement au guichet (selon les conditions).</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 6.7</span>
+            <span class="question">Que peut faire un voyageur qui a oublié son abonnement ?</span>
+            <div class="answer">Je fais un constat. Il a 14 jours pour montrer son abonnement au guichet. Il ne paiera que des frais administratifs.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 6.8</span>
+            <span class="question">Où et comment acheter un titre de transport ?</span>
+            <div class="answer">Sur l'application SNCB, sur le site web, aux automates dans les gares, ou aux guichets.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 6.9</span>
+            <span class="question">Comment êtes-vous informé sur les nouveaux titres de transport ?</span>
+            <div class="answer">Via ma tablette (digital), les briefings au dépôt, ou les e-mails internes de la SNCB.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 6.10</span>
+            <span class="question">La SNCB a-t-elle récemment lancé un nouveau produit ? Si oui, lequel ? Expliquez ?</span>
+            <div class="answer">Oui, par exemple le "Flex Abonnement" pour le télétravail (2 ou 3 jours par semaine).</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 6.11</span>
+            <span class="question">Quelles sont les offres temporaires que la SNCB met chaque année à disposition des voyageurs ?</span>
+            <div class="answer">Le "Duo Ticket" (2 billets pour 1) ou des promotions pendant les vacances (Winter Promo).</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 6.12</span>
+            <span class="question">Peut-on acheter un billet de train longtemps à l’avance ? Le(s)quel(s) ?</span>
+            <div class="answer">Oui, pour les trains nationaux, on peut acheter un billet 30 jours à l'avance. Pour l'international (TGV), c'est plusieurs mois à l'avance.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 6.13</span>
+            <span class="question">Si le voyageur n’a pas de titre de transport, que doit-il faire ? Est-ce toujours possible ?</span>
+            <div class="answer">Venir me trouver <strong>avant</strong> ou tout de suite après le départ pour acheter au Tarif à Bord. Sinon, le supplément est plus cher.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 6.14</span>
+            <span class="question">Faut-il toujours payer un supplément si le voyageur achète son billet dans le train ?</span>
+            <div class="answer">Oui, sauf si le voyageur monte dans une gare où il n'y a pas d'automate ou si l'automate était en panne.</div>
+        </div>
+    </div>
+
+    <!-- Hoofdstuk 7 -->
+    <button class="accordion">7. Questions sur les lignes (3)</button>
+    <div class="panel">
+        <div class="qa-card">
+            <span class="q-num">Vraag 7.1</span>
+            <span class="question">Quelles lignes faites-vous ?</span>
+            <div class="answer">Je travaille sur les lignes qui partent de mon dépôt (ex: Bruxelles-Anvers). Je vais un peu partout en Belgique.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 7.2</span>
+            <span class="question">Quelles lignes préférez-vous ou détestez-vous ? Pourquoi ?</span>
+            <div class="answer">Je préfère les lignes IC (InterCity) car les trajets sont plus longs et calmes. J'aime moins les lignes L (Omnibus) car il y a trop d'arrêts.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 7.3</span>
+            <span class="question">Y a-t-il des lignes plus dangereuses les unes que les autres ? Pourquoi ?</span>
+            <div class="answer">Oui, certaines lignes autour des grandes villes tard le soir peuvent être plus difficiles à cause de l'insécurité ou de l'alcool.</div>
+        </div>
+    </div>
+
+    <!-- Hoofdstuk 8 -->
+    <button class="accordion">8. Questions sur les problèmes dans le train (27)</button>
+    <div class="panel">
+        
+        <!-- Tussenkopje A -->
+        <h3 class="subheader">A. Avec les voyageurs</h3>
+
+        <div class="qa-card">
+            <span class="q-num">Vraag 8.1</span>
+            <span class="question">Quels sont les problèmes les plus fréquents avec les voyageurs ?</span>
+            <div class="answer">Les discussions sur la validité du ticket, les nuisances sonores, les pieds sur les sièges et parfois l'agressivité.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 8.2</span>
+            <span class="question">Pourquoi les voyageurs sont-ils agressifs ?</span>
+            <div class="answer">Souvent à cause d'un retard, d'un train supprimé, ou parce qu'ils n'ont pas de billet et ne veulent pas payer. L'alcool joue aussi un rôle.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 8.3</span>
+            <span class="question">Les voyageurs ont-ils parfois « raison » d’être agressifs ?</span>
+            <div class="answer">Ils ont raison d'être mécontents si le service n'est pas bon, mais l'agressivité verbale ou physique n'est jamais acceptable.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 8.4</span>
+            <span class="question">Avez-vous déjà été victime d’une agression verbale et/ou physique ?</span>
+            <div class="answer">[Persoonlijk] Oui, verbalement, des insultes. C'est courant mais je reste calme. (OU: Non, heureusement).</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 8.5</span>
+            <span class="question">Quels sont vos recours si vous êtes menacé verbalement ou physiquement ?</span>
+            <div class="answer">Je peux appeler le SOC pour demander l'intervention de Securail ou de la Police. Je peux aussi porter plainte.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 8.6</span>
+            <span class="question">En êtes-vous satisfait ? Expliquez !</span>
+            <div class="answer">Oui, le système de soutien est bon. On a aussi un support psychologique après une agression grave.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 8.7</span>
+            <span class="question">Que fait la SNCB pour améliorer votre sécurité ?</span>
+            <div class="answer">Il y a plus de caméras dans les trains et les gares, plus d'agents Securail, et des campagnes de sensibilisation.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 8.8</span>
+            <span class="question">Lors de votre formation, êtes-vous préparé au problème d’agression ?</span>
+            <div class="answer">Oui, nous avons suivi des cours de "gestion de conflits" pour apprendre à désescalader une situation tendue.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 8.9</span>
+            <span class="question">Que faites-vous si un voyageur est malade dans votre train ?</span>
+            <div class="answer">Je demande si un médecin est présent. Si c'est grave, j'appelle le SOC pour faire venir une ambulance à la prochaine gare.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 8.10</span>
+            <span class="question">Lors de votre formation, êtes-vous préparé à cette situation ?</span>
+            <div class="answer">Oui, nous avons tous le brevet de secourisme. Nous savons faire les premiers gestes (RCP, défibrillateur).</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 8.11</span>
+            <span class="question">Que faites-vous face à un voyageur ivre dans le train ?</span>
+            <div class="answer">S'il est calme, je le laisse dormir. S'il est agressif, je demande l'intervention de la police pour le faire descendre du train.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 8.12</span>
+            <span class="question">Si un voyageur a oublié un objet dans le train, que doit-il faire ?</span>
+            <div class="answer">Il doit remplir un formulaire "objets perdus" sur le site web de la SNCB.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 8.13</span>
+            <span class="question">Que faites-vous/Que fait la SNCB des objets trouvés ?</span>
+            <div class="answer">Si je trouve un objet, je mets une étiquette avec les détails et je le dépose au guichet de la gare terminus.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 8.14</span>
+            <span class="question">Si un voyageur est dévoyé, comme l’aidez-vous ?</span>
+            <div class="answer">Je le rassure. Je regarde sur mon application quel est le meilleur itinéraire pour qu'il retourne à sa destination et je lui explique.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 8.15</span>
+            <span class="question">Que faites-vous si un voyageur se trouve en première classe avec un billet de deuxième classe ?</span>
+            <div class="answer">Je lui demande poliment de changer de place et d'aller en 2ème classe. Ou il peut payer un surclassement.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 8.16</span>
+            <span class="question">Quand et comment déclassez-vous une voiture ?</span>
+            <div class="answer">Si la 2ème classe est pleine et la 1ère est vide, je peux décider de "déclasser". Je fais une annonce au micro pour autoriser les gens.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 8.17</span>
+            <span class="question">De quoi se plaignent les voyageurs ?</span>
+            <div class="answer">Des retards, des trains trop courts (pas de place assis), des toilettes sales, et de la température.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 8.18</span>
+            <span class="question">Comment réagissent les voyageurs en cas de problème ?</span>
+            <div class="answer">La plupart sont compréhensifs mais résignés. D'autres s'énervent, soupirent ou viennent se plaindre chez moi.</div>
+        </div>
+
+        <!-- Tussenkopje B -->
+        <h3 class="subheader">B. Avec le train</h3>
+
+        <div class="qa-card">
+            <span class="q-num">Vraag 8.19</span>
+            <span class="question">Quels sont les problèmes les plus fréquents que vous rencontrez avec le matériel ?</span>
+            <div class="answer">Des portes qui ne s'ouvrent pas, des toilettes bouchées, ou le système d'annonce sonore qui ne fonctionne pas.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 8.20</span>
+            <span class="question">En cas d’accident et/ou de suicide que devez-vous faire ?</span>
+            <div class="answer">Je ne laisse personne descendre. Je rassure les voyageurs. Je contacte le conducteur et le SOC. J'attends les secours.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 8.21</span>
+            <span class="question">En cas de collision avec un « obstacle », que devez-vous faire ?</span>
+            <div class="answer">Le train s'arrête. Je vérifie s'il y a des blessés à bord. Je communique avec le conducteur pour la suite.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 8.22</span>
+            <span class="question">Un train peut-il être supprimé ? Pour quelle raison ?</span>
+            <div class="answer">Oui. Cela arrive en cas de panne technique du train, d'absence du personnel (maladie), ou d'incident grave sur la ligne.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 8.23</span>
+            <span class="question">Que faites-vous si une porte ne s’ouvre pas ?</span>
+            <div class="answer">Je colle un autocollant "Dérangé/Defect", je la verrouille pour que personne ne l'utilise et je signale le problème via ma tablette.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 8.24</span>
+            <span class="question">Quelles sont les causes les plus fréquentes des retards de trains ?</span>
+            <div class="answer">Les problèmes techniques, les travaux sur les voies, les incidents de personnes et parfois les correspondances attendues.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 8.25</span>
+            <span class="question">A quelles compensations a droit le voyageur ? Que doit-il faire pour y avoir droit ?</span>
+            <div class="answer">Si le retard est de plus de 60 minutes, il a droit à une compensation. Il doit remplir un formulaire sur le site de la SNCB.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 8.26</span>
+            <span class="question">Que faites-vous si en hiver, le chauffage ne fonctionne pas ou en été, l’air conditionné ne fonctionne pas dans tout le train ?</span>
+            <div class="answer">J'essaie de déplacer les voyageurs vers une autre voiture. Si tout le train est en panne, je signale le problème au conducteur.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 8.27</span>
+            <span class="question">Avez-vous eu un incident grave lors d’un de vos services ?</span>
+            <div class="answer">[Persoonlijk] Non, jamais d'incident grave jusqu'à présent. (OU: Oui, un accident à un passage à niveau).</div>
+        </div>
+    </div>
+
+    <!-- Hoofdstuk 9 -->
+    <button class="accordion">9. Questions sur la sécurité dans le train (9)</button>
+    <div class="panel">
+        <div class="qa-card">
+            <span class="q-num">Vraag 9.1</span>
+            <span class="question">Qu’est-ce qui est le plus important : la sécurité ou le contrôle? Pourquoi?</span>
+            <div class="answer"><strong>La sécurité.</strong> C'est la priorité absolue. Si la sécurité n'est pas assurée, le train ne peut pas partir. Le contrôle est secondaire.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 9.2</span>
+            <span class="question">« Je suis responsable de la sécurité », qu’est-ce que ça signifie ?</span>
+            <div class="answer">Cela signifie que je dois veiller à ce que les portes soient fermées avant le départ, qu'aucun voyageur ne soit en danger, et réagir en cas d'incident.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 9.3</span>
+            <span class="question">Qu’est-ce que « préparer le train » ?</span>
+            <div class="answer">C'est vérifier le train avant le premier départ : tester les freins, vérifier les portes, l'éclairage, la sonorisation et la propreté.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 9.4</span>
+            <span class="question">Comment donnez-vous le départ ?</span>
+            <div class="answer">Je vérifie le quai, je ferme les portes. Je vérifie qu'il n'y a personne coincé. Je donne le signal de départ au conducteur.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 9.5</span>
+            <span class="question">Le départ, est-il un moment dangereux ? Que peut-il se passer ? Que faites-vous ?</span>
+            <div class="answer">Oui, c'est critique. Un voyageur peut essayer de monter au dernier moment et se coincer. Je surveille le train jusqu'à ce qu'il ait quitté le quai.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 9.6</span>
+            <span class="question">Pour quelles raisons peut-on tirer le signal d’alarme ?</span>
+            <div class="answer">Uniquement en cas de danger immédiat pour les personnes : incendie, agression très grave, ou problème médical vital.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 9.7</span>
+            <span class="question">Que signifie « isoler une porte » ? Quand le faites-vous ?</span>
+            <div class="answer">C'est condamner une porte (la verrouiller mécaniquement). Je le fais si elle est défectueuse et ne ferme plus correctement.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 9.8</span>
+            <span class="question">Comment assurez-vous la sécurité dans des trains très longs ? Lorsque le quai est en forme de courbe ?</span>
+            <div class="answer">Si je ne peux pas tout voir, je demande l'aide d'un collègue pour surveiller l'autre partie du train, ou je descends sur le quai pour avoir une meilleure vue.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 9.9</span>
+            <span class="question">Qu’est-ce que le SOC ?</span>
+            <div class="answer">C'est le Security Operations Center. C'est la centrale de sécurité de la SNCB disponible 24h/24. On les appelle pour toutes les urgences.</div>
+        </div>
+    </div>
+
+    <!-- Hoofdstuk 10 -->
+    <button class="accordion">10. Autour de l’examen selor (7)</button>
+    <div class="panel">
+        <div class="qa-card">
+            <span class="q-num">Vraag 10.1</span>
+            <span class="question">Est-ce la première fois que vous présentez l’examen ? Sinon, pourquoi pensez-vous avoir échoué ? Qu’avez-vous fait pour vous améliorer ?</span>
+            <div class="answer">[Persoonlijk] Oui, c'est la première fois. (OU: Non, j'avais échoué à cause du stress. J'ai beaucoup pratiqué depuis).</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 10.2</span>
+            <span class="question">Comment avez-vous préparé cet examen ?</span>
+            <div class="answer">J'ai révisé mon vocabulaire ferroviaire, j'ai lu les procédures et j'ai pratiqué la conversation avec des collègues francophones.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 10.3</span>
+            <span class="question">Que faites-vous au cours de français ?</span>
+            <div class="answer">Nous faisons des exercices de grammaire, nous apprenons le vocabulaire spécifique du métier et nous faisons des jeux de rôle.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 10.4</span>
+            <span class="question">Pourquoi présentez-vous cet examen ?</span>
+            <div class="answer">Pour être nommé statutaire définitivement et pour obtenir la prime de bilinguisme. C'est aussi important pour bien servir les clients.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 10.5</span>
+            <span class="question">Avez-vous (souvent) l’occasion de parler français ?</span>
+            <div class="answer">Oui, je travaille souvent à Bruxelles ou sur des lignes vers la Wallonie, donc je parle français avec les voyageurs tous les jours.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 10.6</span>
+            <span class="question">Trouvez-vous nécessaire d’être bilingue ?</span>
+            <div class="answer">Oui, absolument. En Belgique, le service public doit pouvoir répondre aux citoyens dans les deux langues nationales. C'est aussi une marque de respect.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 10.7</span>
+            <span class="question">Qu’allez-vous faire après l’examen ?</span>
+            <div class="answer">Je vais continuer à pratiquer mon français pour ne pas perdre mon niveau, et peut-être fêter ma réussite avec mes collègues !</div>
+        </div>
+    </div>
+
+    <!-- Hoofdstuk 11 -->
+    <button class="accordion">11. Divers (2)</button>
+    <div class="panel">
+        <div class="qa-card">
+            <span class="q-num">Vraag 11.1</span>
+            <span class="question">Racontez-nous une anecdote qui vous est arrivée pendant votre travail !</span>
+            <div class="answer">Une fois, un chien est monté dans le train tout seul. Il était très gentil. On l'a gardé avec nous en cabine jusqu'à l'arrivée où la police l'a récupéré.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 11.2</span>
+            <span class="question">Vous souvenez-vous de votre premier service ? Expliquez !</span>
+            <div class="answer">Oui, j'étais très nerveux. J'avais peur de me tromper de procédure. Mais j'étais accompagné par un moniteur expérimenté et tout s'est bien passé.</div>
+        </div>
+    </div>
+
+    <!-- Hoofdstuk 12 -->
+    <button class="accordion">12. Présentez votre employeur ! (2)</button>
+    <div class="panel">
+        <div class="qa-card">
+            <span class="q-num">Vraag 12.1</span>
+            <span class="question">Quelle est l’actualité SNCB du moment ?</span>
+            <div class="answer">On parle beaucoup de l'arrivée des nouveaux trains M7 à double étage, des nouveaux horaires de décembre et du recrutement de beaucoup de personnel.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">Vraag 12.2</span>
+            <span class="question">Que changeriez-vous à la SNCB/au métier d’AT ?</span>
+            <div class="answer">J'aimerais qu'il y ait moins de retards pour que les voyageurs soient moins agressifs. Et peut-être des horaires un peu plus réguliers pour la santé.</div>
+        </div>
+    </div>
+
+    <!-- Hoofdstuk 13 -->
+    <button class="accordion">13. Le jour J (6)</button>
+    <div class="panel">
+        <div class="qa-card">
+            <span class="q-num">13.1</span>
+            <span class="question">Il s’agit d’un entretien relatif à des sujets liés au travail. Les membres du jury tiennent uniquement compte de la maîtrise de la langue, pas du contenu.</span>
+            <div class="answer">C'est noté. Je vais me concentrer sur la clarté de mon français, tout en parlant de mon expérience professionnelle à la SNCB.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">13.2</span>
+            <span class="question">Conseils :</span>
+            <div class="answer">Je veillerai à rester calme, poli et souriant. Je prendrai le temps de réfléchir avant de répondre pour faire des phrases correctes.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">13.3</span>
+            <span class="question">L’entretien n’aborde que des situations dans un environnement de travail, pas votre vie privée ni vos hobbies.</span>
+            <div class="answer">D'accord. Je resterai professionnel et je parlerai uniquement de mon métier, sauf si le jury me pose une question personnelle spécifique.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">13.4</span>
+            <span class="question">Pour vous préparer, vous pouvez déjà réfléchir à des questions que des clients, des collègues, vous ont déjà posées dans le cadre de votre travail.</span>
+            <div class="answer">J'ai préparé des réponses aux questions fréquentes des voyageurs, comme les retards, les correspondances et les types de billets, pour être prêt à répondre.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">13.5</span>
+            <span class="question">Répondez aussi concrètement que possible aux questions, ne donnez pas de réponses standard.</span>
+            <div class="answer">Je vais utiliser des exemples réels de mon quotidien (comme une situation de conflit ou un problème technique) pour rendre mes réponses vivantes et concrètes.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">13.6</span>
+            <span class="question">Donnez des détails et des exemples, si nécessaire.</span>
+            <div class="answer">Si je sens que ma réponse est trop courte, j'ajouterai une anecdote ou un détail précis sur une procédure pour montrer que je maîtrise bien mon sujet et la langue.</div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // Accordeon functionaliteit
+    var acc = document.getElementsByClassName("accordion");
+    var i;
+
+    for (i = 0; i < acc.length; i++) {
+        acc[i].addEventListener("click", function() {
+            this.classList.toggle("active");
+            var panel = this.nextElementSibling;
+            
+            if (panel.style.maxHeight) {
+                panel.style.maxHeight = null;
+            } else {
+                panel.style.maxHeight = panel.scrollHeight + "px";
+            } 
+        });
+    }
+
+    // Functie om alles dicht te klappen
+    function collapseAll() {
+        var acc = document.getElementsByClassName("accordion");
+        for (i = 0; i < acc.length; i++) {
+            acc[i].classList.remove("active");
+            var panel = acc[i].nextElementSibling;
+            panel.style.maxHeight = null;
+        }
+        // Scroll ook terug naar boven voor de zekerheid
+        document.body.scrollTop = 0; 
+        document.documentElement.scrollTop = 0;
+    }
+
+    // Zwevende knop functionaliteit
+    var mybutton = document.getElementById("myBtn");
+
+    window.onscroll = function() {scrollFunction()};
+
+    function scrollFunction() {
+        if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+            mybutton.style.display = "block";
+        } else {
+            mybutton.style.display = "none";
+        }
+    }
+
+    function topFunction() {
+        document.body.scrollTop = 0; 
+        document.documentElement.scrollTop = 0; 
+    }
+</script>
+
+</body>
+</html>
