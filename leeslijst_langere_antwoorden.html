@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SELOR Lijst (Uitgebreid)</title>
+<link rel="apple-touch-icon" href="icon.png">
+<style>
+    /* Algemene opmaak voor mobiel */
+    html {
+        scroll-behavior: smooth;
+    }
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        background-color: #f4f4f9;
+        margin: 0;
+        padding: 0;
+        color: #333;
+        line-height: 1.6; /* Iets meer ruimte tussen lijnen voor lange tekst */
+    }
+
+    /* Header */
+    header {
+        background-color: #006ab3; /* NMBS Blauw */
+        color: white;
+        text-align: center;
+        padding: 20px 10px;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    h1 { margin: 0; font-size: 1.2rem; font-weight: 700; }
+    p.sub { margin: 5px 0 0; font-size: 0.9rem; opacity: 0.9; }
+
+    /* Reset Knop Container */
+    .controls {
+        text-align: center;
+        margin: 15px 0 5px 0;
+    }
+
+    /* Reset Knop Stijl */
+    .reset-btn {
+        background-color: #fff;
+        color: #006ab3;
+        border: 1px solid #006ab3;
+        padding: 8px 16px;
+        font-size: 0.9rem;
+        border-radius: 20px;
+        cursor: pointer;
+        font-weight: bold;
+    }
+
+    /* Container */
+    .container {
+        max-width: 100%;
+        padding: 10px;
+        padding-bottom: 80px;
+    }
+
+    /* Zwevende Terug-knop */
+    #myBtn {
+        display: none;
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 99;
+        border: none;
+        outline: none;
+        background-color: #006ab3;
+        color: white;
+        cursor: pointer;
+        padding: 0;
+        border-radius: 50%;
+        font-size: 20px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        width: 50px;
+        height: 50px;
+        line-height: 50px;
+        text-align: center;
+    }
+
+    /* Accordeon knop */
+    .accordion {
+        background-color: #ffffff;
+        color: #006ab3;
+        cursor: pointer;
+        padding: 18px;
+        width: 100%;
+        border: none;
+        text-align: left;
+        outline: none;
+        font-size: 1rem;
+        font-weight: bold;
+        transition: 0.3s;
+        margin-bottom: 10px;
+        border-radius: 8px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        line-height: 1.3;
+    }
+
+    .active, .accordion:hover {
+        background-color: #e6f0fa;
+    }
+
+    .accordion:after {
+        content: '\002B'; 
+        font-size: 1.5rem;
+        margin-left: 10px;
+        flex-shrink: 0; 
+    }
+
+    .active:after {
+        content: "\2212"; 
+    }
+
+    /* Paneel */
+    .panel {
+        padding: 0 5px;
+        background-color: #f4f4f9;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease-out;
+        margin-bottom: 5px;
+    }
+
+    /* Vraag & Antwoord Kaart */
+    .qa-card {
+        background-color: white;
+        padding: 20px;
+        margin-bottom: 15px;
+        border-radius: 8px;
+        border-left: 5px solid #006ab3;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    }
+
+    .q-num {
+        color: #999;
+        font-size: 0.8rem;
+        font-weight: bold;
+        display: block;
+        margin-bottom: 5px;
+        text-transform: uppercase;
+    }
+
+    .question {
+        font-weight: 700;
+        color: #d32f2f;
+        margin-bottom: 12px;
+        display: block;
+        font-size: 1.05rem;
+    }
+
+    .answer {
+        color: #222;
+        background-color: #f8f9fa;
+        padding: 12px;
+        border-radius: 6px;
+        font-size: 1rem;
+        border: 1px solid #e9ecef;
+    }
+    
+    .subheader {
+        background-color: #daeefc;
+        color: #004d80;
+        padding: 10px;
+        margin: 15px 0 10px 0;
+        border-radius: 5px;
+        font-weight: bold;
+        font-size: 1rem;
+        text-align: center;
+        border: 1px solid #b3d7ff;
+    }
+
+</style>
+</head>
+<body>
+
+<header>
+    <h1>SELOR</h1>
+    <p class="sub">Langere antwoorden</p>
+</header>
+
+<div class="controls">
+    <button class="reset-btn" onclick="collapseAll()">&#x21bb; Alles sluiten</button>
+</div>
+
+<button onclick="topFunction()" id="myBtn" title="Terug naar boven">&#8679;</button>
+
+<div class="container">
+
+    <!-- 1. Parcours -->
+    <button class="accordion">1. Questions sur votre parcours professionnel (se présenter) (6)</button>
+    <div class="panel">
+        <div class="qa-card">
+            <span class="q-num">1.1</span>
+            <span class="question">Quelle est votre profession actuelle ? Depuis quand exercez-vous cette fonction ?</span>
+            <div class="answer">Je travaille actuellement comme accompagnateur de train à la SNCB. J’exerce cette fonction depuis [X] ans. J’apprécie le contact avec les voyageurs et la diversité des situations.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">1.2</span>
+            <span class="question">Dans quel dépôt travaillez-vous ? Est-ce loin de votre domicile ?</span>
+            <div class="answer">Je travaille au dépôt de [Nom du dépôt]. Il se situe à environ [X] minutes de mon domicile, ce qui est tout à fait gérable. J’organise mes déplacements en tenant compte de mes horaires.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">1.3</span>
+            <span class="question">Êtes-vous satisfait ?</span>
+            <div class="answer">Oui, globalement je suis satisfait. Le travail est varié et utile, et j’apprends en continu. Bien sûr, il y a des moments plus stressants, mais l’équipe et l’organisation m’aident à rester efficace.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">1.4</span>
+            <span class="question">Comment êtes-vous entré à la SNCB ? Qui vous a donné l’idée/l’envie ?</span>
+            <div class="answer">J’ai postulé après m’être renseigné sur le métier et les conditions de travail. L’idée est venue de [une personne / une expérience] et j’ai été attiré par un emploi stable, concret et orienté service. La formation m’a ensuite permis de me sentir prêt sur le terrain.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">1.5</span>
+            <span class="question">Quelles études avez-vous faites ? Pourquoi n’avez-vous pas continué dans cette voie ?</span>
+            <div class="answer">J’ai suivi des études en [domaine]. J’ai choisi ensuite de m’orienter vers la SNCB car je voulais un métier plus concret et plus dynamique, avec du contact humain. Aujourd’hui, je valorise ces compétences dans ma communication et mon sens de l’organisation.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">1.6</span>
+            <span class="question">Est-ce votre premier travail ? Sinon, qu’avez-vous fait avant ? Pourquoi avez-vous changé ?</span>
+            <div class="answer">Ce n’est pas mon premier travail. Avant la SNCB, j’ai travaillé dans [secteur] où j’ai développé le sens du service et la gestion du stress. J’ai changé parce que je cherchais plus de stabilité et un métier qui a du sens au quotidien.</div>
+        </div>
+    </div>
+
+    <!-- 2. Profession -->
+    <button class="accordion">2. La profession d’accompagnateur de train (8)</button>
+    <div class="panel">
+        <div class="qa-card">
+            <span class="q-num">2.1</span>
+            <span class="question">Quelles sont les qualités d’un bon accompagnateur de train ?</span>
+            <div class="answer">Pour moi, un bon accompagnateur de train doit être calme, poli et ferme si nécessaire. Il faut bien communiquer, rester attentif à la sécurité et savoir gérer les conflits. L’empathie et la rigueur sont essentielles.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">2.2</span>
+            <span class="question">Quels sont les avantages de travailler à la SNCB ?</span>
+            <div class="answer">Il y a plusieurs avantages : un emploi stable (statutaire), une formation solide, et un travail varié. On a aussi un esprit d’équipe et des possibilités d’évolution. Enfin, le service au public donne un vrai sentiment d’utilité.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">2.3</span>
+            <span class="question">Quels sont les avantages et les désavantages de votre travail ?</span>
+            <div class="answer">Les avantages sont la grande liberté, l'absence de routine et les contacts sociaux enrichissants. Par contre, les désavantages sont liés aux horaires irréguliers : se lever très tôt ou rentrer tard, ainsi que le travail le week-end, ce qui demande une bonne organisation familiale.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">2.4</span>
+            <span class="question">Prenez-vous le train en dehors de votre travail ? Quelles sont les facilités de circulation dont vous ou votre famille pouvez bénéficier ?</span>
+            <div class="answer">Oui, je prends régulièrement le train pour mes loisirs. En tant que cheminot, moi et ma famille proche (conjoint, enfants) bénéficions de la gratuité sur le réseau, ce qui est un avantage considérable pour nos déplacements.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">2.5</span>
+            <span class="question">Avez-vous des possibilités d’avancement dans votre carrière et avez-vous l’intention d’évoluer? Expliquez !</span>
+            <div class="answer">Oui, la SNCB offre des possibilités d'évolution interne. Avec de l'expérience, je pourrais par exemple devenir chef d'équipe, formateur, ou postuler pour des fonctions administratives ou de coordination au sein de l'entreprise.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">2.6</span>
+            <span class="question">Comment devient-on accompagnateur de train ? (Recrutement – Formation)</span>
+            <div class="answer">Le processus commence par des tests psychotechniques et une visite médicale stricte. Ensuite, il faut suivre une formation intensive de plusieurs mois, qui combine la théorie (règlementation, sécurité) et la pratique sur le terrain avec un moniteur.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">2.7</span>
+            <span class="question">Décrivez votre rôle/vos tâches/vos responsabilités !</span>
+            <div class="answer">Ma responsabilité principale est la sécurité : je veille à la fermeture des portes et je donne le départ du train. Ensuite, j'assure le contrôle des titres de transport, j'informe les voyageurs en cas de perturbation et je gère les éventuels conflits à bord.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">2.8</span>
+            <span class="question">Comment se passe une journée ordinaire de travail ?</span>
+            <div class="answer">Je commence par consulter mon planning et vérifier mon matériel. Je rejoins mon train, j'effectue les vérifications de sécurité (freins, portes) avant le départ. Durant le trajet, je contrôle les billets et je reste disponible pour aider les clients.</div>
+        </div>
+    </div>
+
+    <!-- 3. Horaires -->
+    <button class="accordion">3. Questions sur les horaires de travail (3)</button>
+    <div class="panel">
+        <div class="qa-card">
+            <span class="q-num">3.1</span>
+            <span class="question">Qu’est-ce qu’être « en série », « hors-série », « planton », « en service léger » ?</span>
+            <div class="answer">Être "en série" signifie avoir un roulement fixe et répétitif. "Hors-série" veut dire que les horaires changent selon les besoins. Le "planton" est une réserve au dépôt pour remplacer un collègue malade. Enfin, le "service léger" est un régime de travail allégé, souvent pour des raisons médicales.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">3.2</span>
+            <span class="question">Quels sont vos horaires de travail ?</span>
+            <div class="answer">Les horaires sont variables et peuvent inclure tôt le matin, tard le soir, ainsi que les week-ends. J’essaie de bien planifier mon repos et ma vie privée. Je reste flexible tout en respectant les règles de récupération.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">3.3</span>
+            <span class="question">Aimez-vous ce rythme de travail ? Est-ce compatible avec votre vie sociale/familiale ?</span>
+            <div class="answer">Oui, on s'habitue à ce rythme. L'avantage est d'avoir des jours de congé en semaine, ce qui est pratique pour les rendez-vous ou les courses. Cependant, cela demande une certaine flexibilité et une bonne organisation avec la famille.</div>
+        </div>
+    </div>
+
+    <!-- 4. Matériel -->
+    <button class="accordion">4. Questions sur le materiel (4)</button>
+    <div class="panel">
+        <div class="qa-card">
+            <span class="q-num">4.1</span>
+            <span class="question">De quel matériel l’accompagnateur a-t-il besoin pour travailler ? A quoi sert-il ?</span>
+            <div class="answer">Je vérifie que mon matériel de travail est complet et en bon état avant le service (p.ex. documents, appareil de contrôle IBIS, pince, sifflet, clé de Berne). Si je constate un problème, je le signale et je suis la procédure. L’objectif est d’être efficace et prêt à aider les voyageurs.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">4.2</span>
+            <span class="question">Décrivez votre uniforme ! En êtes-vous satisfait ? Justifiez !</span>
+            <div class="answer">Oui, globalement je suis satisfait. Le travail est varié et utile, et j’apprends en continu. Bien sûr, il y a des moments plus stressants, mais l’équipe et l’organisation m’aident à rester efficace.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">4.3</span>
+            <span class="question">Quels sont les différents types de train qui existent à la SNCB ? Expliquez les différences entre eux !</span>
+            <div class="answer">Il y a principalement deux types : les automotrices (comme les Desiro) qui ont des moteurs intégrés sur tout le train, et les trains tractés, composés d'une locomotive et de voitures séparées. Les procédures de sécurité, notamment pour les portes, peuvent différer.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">4.4</span>
+            <span class="question">Dans quel type de matériel préférez-vous travailler ? Pourquoi ?</span>
+            <div class="answer">Je vérifie que mon matériel de travail est complet et en bon état avant le service (p.ex. documents, appareil de contrôle). Si je constate un problème, je le signale et je suis la procédure. L’objectif est d’être efficace et prêt à aider les voyageurs.</div>
+        </div>
+    </div>
+
+    <!-- 5. Contrôle -->
+    <button class="accordion">5. Questions sur le controle (16)</button>
+    <div class="panel">
+        <div class="qa-card">
+            <span class="q-num">5.1</span>
+            <span class="question">Comment contrôlez-vous un titre de transport ?</span>
+            <div class="answer">Je contrôle le titre de transport de manière correcte et respectueuse. Je vérifie la validité, l’identité si nécessaire, et je reste clair dans mes explications. Je garde un ton professionnel, même en cas de discussion.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">5.2</span>
+            <span class="question">Que faites-vous si un voyageur n’est pas en ordre :</span>
+            <div class="answer">Je reste calme et j’explique clairement les règles. Selon la situation, j’applique la procédure: régularisation, constat d’infraction, ou demande d’assistance si nécessaire. L’objectif est de rester juste, cohérent et sécurisé.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">5.2.1</span>
+            <span class="question">Pas de ticket</span>
+            <div class="answer">Je reste calme et j’explique clairement les règles. Selon la situation, j’applique la procédure: régularisation, constat d’infraction, ou demande d’assistance si nécessaire. L’objectif est de rester juste, cohérent et sécurisé.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">5.2.2</span>
+            <span class="question">Pas d’argent - pas de carte d’identité</span>
+            <div class="answer">Je reste calme et j’explique clairement les règles. Selon la situation, j’applique la procédure: régularisation, constat d’infraction, ou demande d’assistance si nécessaire. L’objectif est de rester juste, cohérent et sécurisé.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">5.2.3</span>
+            <span class="question">A rempli son multi dans le train ...</span>
+            <div class="answer">Je reste calme et j’explique clairement les règles. Selon la situation, j’applique la procédure: régularisation, constat d’infraction, ou demande d’assistance si nécessaire. L’objectif est de rester juste, cohérent et sécurisé.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">5.3</span>
+            <span class="question">Quels sont les types de fraude les plus fréquents avec un titre de transport ?</span>
+            <div class="answer">Les fraudes les plus fréquentes concernent des titres non valides, des réductions non justifiées, ou des titres utilisés en dehors des conditions. Je reste attentif aux incohérences, mais je garde une approche respectueuse. Si je constate une fraude, j’applique la procédure.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">5.4</span>
+            <span class="question">Quelles sont les amendes les plus fréquentes ?</span>
+            <div class="answer">Les amendes les plus fréquentes concernent l’absence de titre valable ou un mauvais usage d’un abonnement/réduction. Une amende est justifiée si les règles ne sont pas respectées, mais je prends aussi en compte le contexte et je reste humain. La suite est gérée par les services compétents de la SNCB.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">5.5</span>
+            <span class="question">L’amende est-elle toujours justifiée ?</span>
+            <div class="answer">Si le règlement n'est pas respecté, elle est techniquement justifiée. Cependant, en tant qu'accompagnateur, j'ai un pouvoir d'appréciation. Si le voyageur est de bonne foi (par exemple une erreur évidente), je peux parfois me limiter à un avertissement verbal.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">5.6</span>
+            <span class="question">Quelle est la suite accordée par la SNCB à vos amendes ?</span>
+            <div class="answer">Les amendes les plus fréquentes concernent l’absence de titre valable ou un mauvais usage d’un abonnement/réduction. Une amende est justifiée si les règles ne sont pas respectées, mais je prends aussi en compte le contexte et je reste humain. La suite est gérée par les services compétents de la SNCB.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">5.7</span>
+            <span class="question">Êtes-vous un accompagnateur sévère ?</span>
+            <div class="answer">Non, je ne me considère pas comme sévère, mais comme juste. J'applique les règles de manière cohérente pour que tout le monde soit traité sur un pied d'égalité, mais je reste toujours courtois et à l'écoute.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">5.8</span>
+            <span class="question">Repérez-vous un fraudeur à son attitude ?</span>
+            <div class="answer">Les fraudes les plus fréquentes concernent des titres non valides, des réductions non justifiées, ou des titres utilisés en dehors des conditions. Je reste attentif aux incohérences, mais je garde une approche respectueuse. Si je constate une fraude, j’applique la procédure.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">5.9</span>
+            <span class="question">Quels sont les types de fraudeurs les plus fréquents ? Pourquoi ?</span>
+            <div class="answer">Les fraudes les plus fréquentes concernent des titres non valides, des réductions non justifiées, ou des titres utilisés en dehors des conditions. Je reste attentif aux incohérences, mais je garde une approche respectueuse. Si je constate une fraude, j’applique la procédure.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">5.10</span>
+            <span class="question">Y a-t-il souvent des resquilleurs dans les toilettes ?</span>
+            <div class="answer">Oui, cela arrive parfois. Si une personne reste anormalement longtemps dans les toilettes à mon approche, je frappe à la porte et j'attends qu'elle sorte pour effectuer le contrôle.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">5.11</span>
+            <span class="question">Faites-vous toujours le contrôle? Est-ce toujours possible ? Expliquez !</span>
+            <div class="answer">J'essaie toujours de faire le contrôle, mais ce n'est pas toujours possible, par exemple en cas de train bondé aux heures de pointe. Dans ce cas, la sécurité et la fermeture des portes restent la priorité absolue.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">5.12</span>
+            <span class="question">A part les titres de transport, que contrôlez-vous aussi dans le train ?</span>
+            <div class="answer">Je contrôle le titre de transport de manière correcte et respectueuse. Je vérifie la validité, l’identité si nécessaire, et je reste clair dans mes explications. Je garde un ton professionnel, même en cas de discussion.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">5.13</span>
+            <span class="question">Quelles informations vous demandent les voyageurs ?</span>
+            <div class="answer">Les voyageurs demandent souvent si le train s'arrête à une certaine gare, à quelle heure nous arrivons, sur quel quai se trouve leur correspondance, ou la raison d'un éventuel retard.</div>
+        </div>
+    </div>
+
+    <!-- 6. Titres de transport -->
+    <button class="accordion">6. Questions sur les titres de transport (14)</button>
+    <div class="panel">
+        <div class="qa-card">
+            <span class="q-num">6.1</span>
+            <span class="question">Quels sont les titres de transport les plus vendus ?</span>
+            <div class="answer">Les titres les plus courants sont le Standard Ticket, le Weekend Ticket, et les formules pour jeunes (Youth Ticket) ou seniors. Les abonnements domicile-travail représentent aussi une très grande part des voyageurs.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">6.2</span>
+            <span class="question">Quels documents doit avoir le voyageur pour justifier l’utilisation d’un titre de transport (quel qu’il soit) ?</span>
+            <div class="answer">Le voyageur doit présenter son titre de transport (billet papier ou numérique sur smartphone). Pour certains billets nominatifs ou à réduction (comme les abonnements ou les tickets Senior), il doit aussi pouvoir présenter sa carte d'identité.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">6.3</span>
+            <span class="question">Quels sont les billets « à réduction » ?</span>
+            <div class="answer">Il existe des réductions pour les Familles Nombreuses, les bénéficiaires de l'Intervention Majorée (BIM), les Militaires, ou encore les Journalistes. Il faut toujours avoir la carte de légitimation correspondante.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">6.4</span>
+            <span class="question">Comment faut-il remplir correctement les « Multi» ?</span>
+            <div class="answer">Je reste calme et j’explique clairement les règles. Selon la situation, j’applique la procédure: régularisation, constat d’infraction, ou demande d’assistance si nécessaire. L’objectif est de rester juste, cohérent et sécurisé.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">6.5</span>
+            <span class="question">Que peut faire un voyageur s’il a perdu son titre de transport ?</span>
+            <div class="answer">Malheureusement, un titre perdu est considéré comme inexistant. Le voyageur devra acheter un nouveau billet au tarif à bord. C'est la règle pour éviter les abus.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">6.6</span>
+            <span class="question">Que peut faire un voyageur avec un billet non utilisé ?</span>
+            <div class="answer">Si le billet n'a pas été validé ou utilisé, il peut parfois demander un remboursement aux guichets, selon les conditions de vente spécifiques à ce billet.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">6.7</span>
+            <span class="question">Que peut faire un voyageur qui a oublié son abonnement ?</span>
+            <div class="answer">Je rédige un constat d'irrégularité. Le voyageur a ensuite 14 jours pour se présenter à un guichet avec son abonnement valable (qui couvre la date du contrôle). Il ne paiera alors que des frais de dossier administratifs, pas l'amende complète.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">6.8</span>
+            <span class="question">Où et comment acheter un titre de transport ?</span>
+            <div class="answer">Les voyageurs peuvent acheter leurs titres via l'application SNCB, sur le site web, aux automates de vente dans les gares, ou aux guichets (là où ils sont encore disponibles).</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">6.9</span>
+            <span class="question">Comment êtes-vous informé sur les nouveaux titres de transport ?</span>
+            <div class="answer">Nous sommes informés via notre tablette (IBIS) par des communications digitales, lors des briefings au dépôt avant la prise de service, ou par les e-mails et newsletters internes de la SNCB.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">6.10</span>
+            <span class="question">La SNCB a-t-elle récemment lancé un nouveau produit ? Si oui, lequel ? Expliquez ?</span>
+            <div class="answer">Oui, par exemple le "Flex Abonnement" qui est conçu pour les personnes qui font du télétravail et ne se rendent au bureau que 2 ou 3 fois par semaine.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">6.11</span>
+            <span class="question">Quelles sont les offres temporaires que la SNCB met chaque année à disposition des voyageurs ?</span>
+            <div class="answer">Il y a souvent des offres comme le "Duo Ticket" (deux billets pour le prix d'un) ou des promotions spécifiques pendant les vacances scolaires comme la "Winter Promo" ou "Summer Promo".</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">6.12</span>
+            <span class="question">Peut-on acheter un billet de train longtemps à l’avance ? Le(s)quel(s) ?</span>
+            <div class="answer">Oui, pour les trains nationaux, on peut généralement acheter un billet 30 jours à l'avance. Pour les trains internationaux (comme TGV ou Eurostar), c'est souvent possible plusieurs mois à l'avance.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">6.13</span>
+            <span class="question">Si le voyageur n’a pas de titre de transport, que doit-il faire ? Est-ce toujours possible ?</span>
+            <div class="answer">Il doit se présenter spontanément auprès de l'accompagnateur avant le départ ou immédiatement après. Il pourra alors acheter un billet au "Tarif à Bord". S'il attend le contrôle, le supplément sera plus élevé.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">6.14</span>
+            <span class="question">Faut-il toujours payer un supplément si le voyageur achète son billet dans le train ?</span>
+            <div class="answer">En principe oui. L'exception principale est si le voyageur monte dans une gare où il n'y a pas d'automate de vente ou si l'automate était en panne (ce que je peux vérifier).</div>
+        </div>
+    </div>
+
+    <!-- 7. Lignes -->
+    <button class="accordion">7. Questions sur les lignes (3)</button>
+    <div class="panel">
+        <div class="qa-card">
+            <span class="q-num">7.1</span>
+            <span class="question">Quelles lignes faites-vous ?</span>
+            <div class="answer">Je travaille sur différentes lignes selon mon planning. Je dois connaître les arrêts principaux, les correspondances et les informations utiles pour répondre aux questions. En cas de doute, je vérifie via les outils disponibles pour donner une information fiable.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">7.2</span>
+            <span class="question">Quelles lignes préférez-vous ou détestez-vous ? Pourquoi ?</span>
+            <div class="answer">Je travaille sur différentes lignes selon mon planning. Je dois connaître les arrêts principaux, les correspondances et les informations utiles pour répondre aux questions. En cas de doute, je vérifie via les outils disponibles pour donner une information fiable.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">7.3</span>
+            <span class="question">Y a-t-il des lignes plus dangereuses les unes que les autres ? Pourquoi ?</span>
+            <div class="answer">Je travaille sur différentes lignes selon mon planning. Je dois connaître les arrêts principaux, les correspondances et les informations utiles pour répondre aux questions. En cas de doute, je vérifie via les outils disponibles pour donner une information fiable.</div>
+        </div>
+    </div>
+
+    <!-- 8. Problèmes -->
+    <button class="accordion">8. Questions sur les problèmes dans le train (27)</button>
+    <div class="panel">
+        
+        <h3 class="subheader">A. Avec les voyageurs</h3>
+
+        <div class="qa-card">
+            <span class="q-num">8.1</span>
+            <span class="question">Quels sont les problèmes les plus fréquents avec les voyageurs ?</span>
+            <div class="answer">En cas de problème à bord, je garde mon calme, j’informe les voyageurs et je contacte les services compétents selon la procédure. Je priorise la sécurité et la communication claire. Ensuite, je contribue à rétablir une situation normale le plus vite possible.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">8.2</span>
+            <span class="question">Pourquoi les voyageurs sont-ils agressifs ?</span>
+            <div class="answer">Je commence par écouter et reconnaître le problème. Je parle calmement, je fixe des limites si nécessaire et je propose une solution réaliste. Si la situation dégénère, je fais appel à l’assistance conformément aux procédures.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">8.3</span>
+            <span class="question">Les voyageurs ont-ils parfois « raison » d’être agressifs ?</span>
+            <div class="answer">Je commence par écouter et reconnaître le problème. Je parle calmement, je fixe des limites si nécessaire et je propose une solution réaliste. Si la situation dégénère, je fais appel à l’assistance conformément aux procédures.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">8.4</span>
+            <span class="question">Avez-vous déjà été victime d’une agression verbale et/ou physique ?</span>
+            <div class="answer">Je réponds de manière structurée. D’abord, je clarifie la situation et les besoins. Ensuite, j’applique les règles et les procédures de la SNCB tout en restant courtois. Enfin, je propose une solution ou j’oriente vers le bon service si nécessaire.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">8.5</span>
+            <span class="question">Quels sont vos recours si vous êtes menacé verbalement ou physiquement ?</span>
+            <div class="answer">Je réponds de manière structurée. D’abord, je clarifie la situation et les besoins. Ensuite, j’applique les règles et les procédures de la SNCB tout en restant courtois. Enfin, je propose une solution ou j’oriente vers le bon service si nécessaire.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">8.6</span>
+            <span class="question">En êtes-vous satisfait ? Expliquez !</span>
+            <div class="answer">Oui, globalement je suis satisfait. Le travail est varié et utile, et j’apprends en continu. Bien sûr, il y a des moments plus stressants, mais l’équipe et l’organisation m’aident à rester efficace.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">8.7</span>
+            <span class="question">Que fait la SNCB pour améliorer votre sécurité ?</span>
+            <div class="answer">La sécurité est prioritaire. Je respecte les procédures, je reste vigilant aux comportements à risque et je communique clairement avec les voyageurs. En cas de danger, j’alerte les services compétents et je garde le contrôle de la situation.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">8.8</span>
+            <span class="question">Lors de votre formation, êtes-vous préparé au problème d’agression ?</span>
+            <div class="answer">Je réponds de manière structurée. D’abord, je clarifie la situation et les besoins. Ensuite, j’applique les règles et les procédures de la SNCB tout en restant courtois. Enfin, je propose une solution ou j’oriente vers le bon service si nécessaire.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">8.9</span>
+            <span class="question">Que faites-vous si un voyageur est malade dans votre train ?</span>
+            <div class="answer">Je réponds de manière structurée. D’abord, je clarifie la situation et les besoins. Ensuite, j’applique les règles et les procédures de la SNCB tout en restant courtois. Enfin, je propose une solution ou j’oriente vers le bon service si nécessaire.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">8.10</span>
+            <span class="question">Lors de votre formation, êtes-vous préparé à cette situation ?</span>
+            <div class="answer">Je réponds de manière structurée. D’abord, je clarifie la situation et les besoins. Ensuite, j’applique les règles et les procédures de la SNCB tout en restant courtois. Enfin, je propose une solution ou j’oriente vers le bon service si nécessaire.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">8.11</span>
+            <span class="question">Que faites-vous face à un voyageur ivre dans le train ?</span>
+            <div class="answer">Je réponds de manière structurée. D’abord, je clarifie la situation et les besoins. Ensuite, j’applique les règles et les procédures de la SNCB tout en restant courtois. Enfin, je propose une solution ou j’oriente vers le bon service si nécessaire.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">8.12</span>
+            <span class="question">Si un voyageur a oublié un objet dans le train, que doit-il faire ?</span>
+            <div class="answer">Je réponds de manière structurée. D’abord, je clarifie la situation et les besoins. Ensuite, j’applique les règles et les procédures de la SNCB tout en restant courtois. Enfin, je propose une solution ou j’oriente vers le bon service si nécessaire.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">8.13</span>
+            <span class="question">Que faites-vous/Que fait la SNCB des objets trouvés ?</span>
+            <div class="answer">Je réponds de manière structurée. D’abord, je clarifie la situation et les besoins. Ensuite, j’applique les règles et les procédures de la SNCB tout en restant courtois. Enfin, je propose une solution ou j’oriente vers le bon service si nécessaire.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">8.14</span>
+            <span class="question">Si un voyageur est dévoyé, comme l’aidez-vous ?</span>
+            <div class="answer">Je réponds de manière structurée. D’abord, je clarifie la situation et les besoins. Ensuite, j’applique les règles et les procédures de la SNCB tout en restant courtois. Enfin, je propose une solution ou j’oriente vers le bon service si nécessaire.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">8.15</span>
+            <span class="question">Que faites-vous si un voyageur se trouve en première classe avec un billet de deuxième classe ?</span>
+            <div class="answer">Je réponds de manière structurée. D’abord, je clarifie la situation et les besoins. Ensuite, j’applique les règles et les procédures de la SNCB tout en restant courtois. Enfin, je propose une solution ou j’oriente vers le bon service si nécessaire.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">8.16</span>
+            <span class="question">Quand et comment déclassez-vous une voiture ?</span>
+            <div class="answer">Je réponds de manière structurée. D’abord, je clarifie la situation et les besoins. Ensuite, j’applique les règles et les procédures de la SNCB tout en restant courtois. Enfin, je propose une solution ou j’oriente vers le bon service si nécessaire.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">8.17</span>
+            <span class="question">De quoi se plaignent les voyageurs ?</span>
+            <div class="answer">Je réponds de manière structurée. D’abord, je clarifie la situation et les besoins. Ensuite, j’applique les règles et les procédures de la SNCB tout en restant courtois. Enfin, je propose une solution ou j’oriente vers le bon service si nécessaire.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">8.18</span>
+            <span class="question">Comment réagissent les voyageurs en cas de problème ?</span>
+            <div class="answer">Je réponds de manière structurée. D’abord, je clarifie la situation et les besoins. Ensuite, j’applique les règles et les procédures de la SNCB tout en restant courtois. Enfin, je propose une solution ou j’oriente vers le bon service si nécessaire.</div>
+        </div>
+
+        <h3 class="subheader">B. Avec le train</h3>
+
+        <div class="qa-card">
+            <span class="q-num">8.19</span>
+            <span class="question">Quels sont les problèmes les plus fréquents que vous rencontrez avec le matériel ?</span>
+            <div class="answer">Je vérifie que mon matériel de travail est complet et en bon état avant le service (p.ex. documents, appareil de contrôle). Si je constate un problème, je le signale et je suis la procédure. L’objectif est d’être efficace et prêt à aider les voyageurs.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">8.20</span>
+            <span class="question">En cas d’accident et/ou de suicide que devez-vous faire ?</span>
+            <div class="answer">Je réponds de manière structurée. D’abord, je clarifie la situation et les besoins. Ensuite, j’applique les règles et les procédures de la SNCB tout en restant courtois. Enfin, je propose une solution ou j’oriente vers le bon service si nécessaire.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">8.21</span>
+            <span class="question">En cas de collision avec un « obstacle », que devez-vous faire ?</span>
+            <div class="answer">Je réponds de manière structurée. D’abord, je clarifie la situation et les besoins. Ensuite, j’applique les règles et les procédures de la SNCB tout en restant courtois. Enfin, je propose une solution ou j’oriente vers le bon service si nécessaire.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">8.22</span>
+            <span class="question">Un train peut-il être supprimé ? Pour quelle raison ?</span>
+            <div class="answer">Je réponds de manière structurée. D’abord, je clarifie la situation et les besoins. Ensuite, j’applique les règles et les procédures de la SNCB tout en restant courtois. Enfin, je propose une solution ou j’oriente vers le bon service si nécessaire.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">8.23</span>
+            <span class="question">Que faites-vous si une porte ne s’ouvre pas ?</span>
+            <div class="answer">Je réponds de manière structurée. D’abord, je clarifie la situation et les besoins. Ensuite, j’applique les règles et les procédures de la SNCB tout en restant courtois. Enfin, je propose une solution ou j’oriente vers le bon service si nécessaire.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">8.24</span>
+            <span class="question">Quelles sont les causes les plus fréquentes des retards de trains ?</span>
+            <div class="answer">Je réponds de manière structurée. D’abord, je clarifie la situation et les besoins. Ensuite, j’applique les règles et les procédures de la SNCB tout en restant courtois. Enfin, je propose une solution ou j’oriente vers le bon service si nécessaire.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">8.25</span>
+            <span class="question">A quelles compensations a droit le voyageur ? Que doit-il faire pour y avoir droit ?</span>
+            <div class="answer">Je réponds de manière structurée. D’abord, je clarifie la situation et les besoins. Ensuite, j’applique les règles et les procédures de la SNCB tout en restant courtois. Enfin, je propose une solution ou j’oriente vers le bon service si nécessaire.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">8.26</span>
+            <span class="question">Que faites-vous si en hiver, le chauffage ne fonctionne pas ou en été, l’air conditionné ne fonctionne pas dans tout le train ?</span>
+            <div class="answer">Je réponds de manière structurée. D’abord, je clarifie la situation et les besoins. Ensuite, j’applique les règles et les procédures de la SNCB tout en restant courtois. Enfin, je propose une solution ou j’oriente vers le bon service si nécessaire.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">8.27</span>
+            <span class="question">Avez-vous eu un incident grave lors d’un de vos services ?</span>
+            <div class="answer">En cas de problème à bord, je garde mon calme, j’informe les voyageurs et je contacte les services compétents selon la procédure. Je priorise la sécurité et la communication claire. Ensuite, je contribue à rétablir une situation normale le plus vite possible.</div>
+        </div>
+    </div>
+
+    <!-- 9. Sécurité -->
+    <button class="accordion">9. Questions sur la sécurité dans le train (9)</button>
+    <div class="panel">
+        <div class="qa-card">
+            <span class="q-num">9.1</span>
+            <span class="question">Qu’est-ce qui est le plus important : la sécurité ou le contrôle? Pourquoi?</span>
+            <div class="answer">La sécurité est prioritaire. Je respecte les procédures, je reste vigilant aux comportements à risque et je communique clairement avec les voyageurs. En cas de danger, j’alerte les services compétents et je garde le contrôle de la situation.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">9.2</span>
+            <span class="question">« Je suis responsable de la sécurité », qu’est-ce que ça signifie ?</span>
+            <div class="answer">La sécurité est prioritaire. Je respecte les procédures, je reste vigilant aux comportements à risque et je communique clairement avec les voyageurs. En cas de danger, j’alerte les services compétents et je garde le contrôle de la situation.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">9.3</span>
+            <span class="question">Qu’est-ce que « préparer le train » ?</span>
+            <div class="answer">Je réponds de manière structurée. D’abord, je clarifie la situation et les besoins. Ensuite, j’applique les règles et les procédures de la SNCB tout en restant courtois. Enfin, je propose une solution ou j’oriente vers le bon service si nécessaire.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">9.4</span>
+            <span class="question">Comment donnez-vous le départ ?</span>
+            <div class="answer">Je réponds de manière structurée. D’abord, je clarifie la situation et les besoins. Ensuite, j’applique les règles et les procédures de la SNCB tout en restant courtois. Enfin, je propose une solution ou j’oriente vers le bon service si nécessaire.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">9.5</span>
+            <span class="question">Le départ, est-il un moment dangereux ? Que peut-il se passer ? Que faites-vous ?</span>
+            <div class="answer">Je réponds de manière structurée. D’abord, je clarifie la situation et les besoins. Ensuite, j’applique les règles et les procédures de la SNCB tout en restant courtois. Enfin, je propose une solution ou j’oriente vers le bon service si nécessaire.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">9.6</span>
+            <span class="question">Pour quelles raisons peut-on tirer le signal d’alarme ?</span>
+            <div class="answer">Je réponds de manière structurée. D’abord, je clarifie la situation et les besoins. Ensuite, j’applique les règles et les procédures de la SNCB tout en restant courtois. Enfin, je propose une solution ou j’oriente vers le bon service si nécessaire.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">9.7</span>
+            <span class="question">Que signifie « isoler une porte » ? Quand le faites-vous ?</span>
+            <div class="answer">Je réponds de manière structurée. D’abord, je clarifie la situation et les besoins. Ensuite, j’applique les règles et les procédures de la SNCB tout en restant courtois. Enfin, je propose une solution ou j’oriente vers le bon service si nécessaire.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">9.8</span>
+            <span class="question">Comment assurez-vous la sécurité dans des trains très longs ? Lorsque le quai est en forme de courbe ?</span>
+            <div class="answer">La sécurité est prioritaire. Je respecte les procédures, je reste vigilant aux comportements à risque et je communique clairement avec les voyageurs. En cas de danger, j’alerte les services compétents et je garde le contrôle de la situation.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">9.9</span>
+            <span class="question">Qu’est-ce que le SOC ?</span>
+            <div class="answer">Je réponds de manière structurée. D’abord, je clarifie la situation et les besoins. Ensuite, j’applique les règles et les procédures de la SNCB tout en restant courtois. Enfin, je propose une solution ou j’oriente vers le bon service si nécessaire.</div>
+        </div>
+    </div>
+
+    <!-- 10. Examen -->
+    <button class="accordion">10. Autour de l’examen selor (7)</button>
+    <div class="panel">
+        <div class="qa-card">
+            <span class="q-num">10.1</span>
+            <span class="question">Est-ce la première fois que vous présentez l’examen ? Sinon, pourquoi pensez-vous avoir échoué ? Qu’avez-vous fait pour vous améliorer ?</span>
+            <div class="answer">Je travaille actuellement comme accompagnateur de train à la SNCB. J’exerce cette fonction depuis [X] ans. J’apprécie le contact avec les voyageurs et la diversité des situations.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">10.2</span>
+            <span class="question">Comment avez-vous préparé cet examen ?</span>
+            <div class="answer">Je réponds de manière structurée. D’abord, je clarifie la situation et les besoins. Ensuite, j’applique les règles et les procédures de la SNCB tout en restant courtois. Enfin, je propose une solution ou j’oriente vers le bon service si nécessaire.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">10.3</span>
+            <span class="question">Que faites-vous au cours de français ?</span>
+            <div class="answer">Je réponds de manière structurée. D’abord, je clarifie la situation et les besoins. Ensuite, j’applique les règles et les procédures de la SNCB tout en restant courtois. Enfin, je propose une solution ou j’oriente vers le bon service si nécessaire.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">10.4</span>
+            <span class="question">Pourquoi présentez-vous cet examen ?</span>
+            <div class="answer">Je travaille actuellement comme accompagnateur de train à la SNCB. J’exerce cette fonction depuis [X] ans. J’apprécie le contact avec les voyageurs et la diversité des situations.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">10.5</span>
+            <span class="question">Avez-vous (souvent) l’occasion de parler français ?</span>
+            <div class="answer">Je réponds de manière structurée. D’abord, je clarifie la situation et les besoins. Ensuite, j’applique les règles et les procédures de la SNCB tout en restant courtois. Enfin, je propose une solution ou j’oriente vers le bon service si nécessaire.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">10.6</span>
+            <span class="question">Trouvez-vous nécessaire d’être bilingue ?</span>
+            <div class="answer">Je réponds de manière structurée. D’abord, je clarifie la situation et les besoins. Ensuite, j’applique les règles et les procédures de la SNCB tout en restant courtois. Enfin, je propose une solution ou j’oriente vers le bon service si nécessaire.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">10.7</span>
+            <span class="question">Qu’allez-vous faire après l’examen ?</span>
+            <div class="answer">Je réponds de manière structurée. D’abord, je clarifie la situation et les besoins. Ensuite, j’applique les règles et les procédures de la SNCB tout en restant courtois. Enfin, je propose une solution ou j’oriente vers le bon service si nécessaire.</div>
+        </div>
+    </div>
+
+    <!-- 11. Divers -->
+    <button class="accordion">11. Divers (2)</button>
+    <div class="panel">
+        <div class="qa-card">
+            <span class="q-num">11.1</span>
+            <span class="question">Racontez-nous une anecdote qui vous est arrivée pendant votre travail !</span>
+            <div class="answer">Je réponds de manière structurée. D’abord, je clarifie la situation et les besoins. Ensuite, j’applique les règles et les procédures de la SNCB tout en restant courtois. Enfin, je propose une solution ou j’oriente vers le bon service si nécessaire.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">11.2</span>
+            <span class="question">Vous souvenez-vous de votre premier service ? Expliquez !</span>
+            <div class="answer">Je réponds de manière structurée. D’abord, je clarifie la situation et les besoins. Ensuite, j’applique les règles et les procédures de la SNCB tout en restant courtois. Enfin, je propose une solution ou j’oriente vers le bon service si nécessaire.</div>
+        </div>
+    </div>
+
+    <!-- 12. Employeur -->
+    <button class="accordion">12. Présentez votre employeur ! (2)</button>
+    <div class="panel">
+        <div class="qa-card">
+            <span class="q-num">12.1</span>
+            <span class="question">Quelle est l’actualité SNCB du moment ?</span>
+            <div class="answer">Je réponds de manière structurée. D’abord, je clarifie la situation et les besoins. Ensuite, j’applique les règles et les procédures de la SNCB tout en restant courtois. Enfin, je propose une solution ou j’oriente vers le bon service si nécessaire.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">12.2</span>
+            <span class="question">Que changeriez-vous à la SNCB/au métier d’AT ?</span>
+            <div class="answer">Je réponds de manière structurée. D’abord, je clarifie la situation et les besoins. Ensuite, j’applique les règles et les procédures de la SNCB tout en restant courtois. Enfin, je propose une solution ou j’oriente vers le bon service si nécessaire.</div>
+        </div>
+    </div>
+
+    <!-- 13. Le jour J -->
+    <button class="accordion">13. Le jour J (6)</button>
+    <div class="panel">
+        <div class="qa-card">
+            <span class="q-num">13.1</span>
+            <span class="question">Il s’agit d’un entretien relatif à des sujets liés au travail. Les membres du jury tiennent uniquement compte de la maîtrise de la langue, pas du contenu.</span>
+            <div class="answer">Je réponds de manière structurée. D’abord, je clarifie la situation et les besoins. Ensuite, j’applique les règles et les procédures de la SNCB tout en restant courtois. Enfin, je propose une solution ou j’oriente vers le bon service si nécessaire.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">13.2</span>
+            <span class="question">Conseils :</span>
+            <div class="answer">Je réponds de manière structurée. D’abord, je clarifie la situation et les besoins. Ensuite, j’applique les règles et les procédures de la SNCB tout en restant courtois. Enfin, je propose une solution ou j’oriente vers le bon service si nécessaire.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">13.3</span>
+            <span class="question">L’entretien n’aborde que des situations dans un environnement de travail, pas votre vie privée ni vos hobbies.</span>
+            <div class="answer">Je réponds de manière structurée. D’abord, je clarifie la situation et les besoins. Ensuite, j’applique les règles et les procédures de la SNCB tout en restant courtois. Enfin, je propose une solution ou j’oriente vers le bon service si nécessaire.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">13.4</span>
+            <span class="question">Pour vous préparer, vous pouvez déjà réfléchir à des questions que des clients, des collègues, vous ont déjà posées dans le cadre de votre travail.</span>
+            <div class="answer">Je réponds de manière structurée. D’abord, je clarifie la situation et les besoins. Ensuite, j’applique les règles et les procédures de la SNCB tout en restant courtois. Enfin, je propose une solution ou j’oriente vers le bon service si nécessaire.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">13.5</span>
+            <span class="question">Répondez aussi concrètement que possible aux questions, ne donnez pas de réponses standard.</span>
+            <div class="answer">Je réponds de manière structurée. D’abord, je clarifie la situation et les besoins. Ensuite, j’applique les règles et les procédures de la SNCB tout en restant courtois. Enfin, je propose une solution ou j’oriente vers le bon service si nécessaire.</div>
+        </div>
+        <div class="qa-card">
+            <span class="q-num">13.6</span>
+            <span class="question">Donnez des détails et des exemples, si nécessaire.</span>
+            <div class="answer">Je réponds de manière structurée. D’abord, je clarifie la situation et les besoins. Ensuite, j’applique les règles et les procédures de la SNCB tout en restant courtois. Enfin, je propose une solution ou j’oriente vers le bon service si nécessaire.</div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    var acc = document.getElementsByClassName("accordion");
+    var i;
+
+    for (i = 0; i < acc.length; i++) {
+        acc[i].addEventListener("click", function() {
+            this.classList.toggle("active");
+            var panel = this.nextElementSibling;
+            if (panel.style.maxHeight) {
+                panel.style.maxHeight = null;
+            } else {
+                panel.style.maxHeight = panel.scrollHeight + "px";
+            } 
+        });
+    }
+
+    function collapseAll() {
+        var acc = document.getElementsByClassName("accordion");
+        for (i = 0; i < acc.length; i++) {
+            acc[i].classList.remove("active");
+            var panel = acc[i].nextElementSibling;
+            panel.style.maxHeight = null;
+        }
+        document.body.scrollTop = 0; 
+        document.documentElement.scrollTop = 0;
+    }
+
+    var mybutton = document.getElementById("myBtn");
+    window.onscroll = function() {scrollFunction()};
+    function scrollFunction() {
+        if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+            mybutton.style.display = "block";
+        } else {
+            mybutton.style.display = "none";
+        }
+    }
+    function topFunction() {
+        document.body.scrollTop = 0; 
+        document.documentElement.scrollTop = 0; 
+    }
+</script>
+
+</body>
+</html>
