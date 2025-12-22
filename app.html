@@ -360,7 +360,7 @@
     <!-- Deel 1 -->
     <h4 style="color:#006ab3;">1. Introductie (Wie en Waarom)</h4>
     <div class="monologue-text" id="mono1">
-      Bonjour. Je m’appelle Valerie et je travaille comme accompagnateur de train à la SNCB depuis 2 ans. J'aime ce métier pour la variété et le contact humain. Je travaille au dépôt de [Depot], ce qui est pratique pour moi. Les horaires sont variables, mais j'apprécie d'avoir congé en semaine. Je suis ici pour confirmer mes compétences et devenir statutaire.
+      Bonjour. Je m’appelle Valerie et je travaille comme accompagnateur de train à la SNCB depuis 2 ans. J'aime ce métier pour la variété et le contact humain. Je travaille au dépôt de Hasselt, ce qui est pratique pour moi. Les horaires sont variables, mais j'apprécie d'avoir congé en semaine. Je suis ici pour confirmer mes compétences et devenir statutaire.
     </div>
     <div class="row">
       <button class="iconBtn" onclick="speakText(document.getElementById('mono1').innerText)">🔊 Luister</button>
@@ -557,7 +557,7 @@
     { vraag: "4.1 De quel matériel l’accompagnateur a-t-il besoin pour travailler ?", antwoord: "Ma tablette (IBIS) voor de horaires, ma pince voor valider, mon sifflet voor le départ en ma clé de Berne voor de portes." },
     { vraag: "4.2 Décrivez votre uniforme ! En êtes-vous satisfait ?", antwoord: "Pantalon bleu, chemise, cravate, veste SNCB. Je suis satisfait car il est confortable et les voyageurs me reconnaissent tout de suite." },
     { vraag: "4.3 Quels sont les différents types de train qui existent à la SNCB ?", antwoord: "Il y a les automotrices (moteurs intégrés, ex: Desiro) et les trains tractés (locomotive + voitures). Les systèmes de portes sont différents." },
-    { vraag: "4.4 Dans quel type de matériel préférez-vous travailler ? Pourquoi ?", antwoord: "Je préfère les modernes (Desiro, M7). Ils sont confortables, il y a la climatisation et de meilleures informations pour les voyageurs." },
+    { vraag: "4.4 Dans quel type de matériel préférez-vous travailler ? Pourquoi ?", antwoord: "Je préfère les modernes (Desiro, M7). Ils sont confortables, il y a la climatisation et de meilleures informations voor les voyageurs." },
 
     // 5. Controle
     { vraag: "5.1 Comment contrôlez-vous un titre de transport ?", antwoord: "Je salue, je demande le titre, je vérifie la date et le trajet, je scanne/poinçonne et je souhaite un bon voyage." },
@@ -600,7 +600,7 @@
 
     // 8. Problemes
     { vraag: "8.1 Quels sont les problèmes les plus fréquents avec les voyageurs ?", antwoord: "Les discussions sur la validité du ticket, les nuisances sonores, les pieds sur les sièges et parfois l'agressivité." },
-    { vraag: "8.2 Pourquoi les voyageurs sont-ils agressifs ?", antwoord: "Souvent à cause d'un retard, d'un train supprimé, ou parce qu'ils n'ont pas de billet et ne veulent pas payer." },
+    { vraag: "8.2 Pourquoi les voyageurs sont-ils agressifs ?", antwoord: "Souvent à cause d'un retard, d'un train supprimé, ou parce qu'ils n'ont pas de billet en ne veulent pas payer." },
     { vraag: "8.3 Les voyageurs ont-ils parfois « raison » d’être agressifs ?", antwoord: "Ils ont raison d'être mécontents si le service n'est pas bon, mais l'agressivité verbale ou physique n'est jamais acceptable." },
     { vraag: "8.4 Avez-vous déjà été victime d’une agression ?", antwoord: "Oui, verbalement, des insultes. C'est courant mais je reste calme. (OU: Non, heureusement)." },
     { vraag: "8.5 Quels sont vos recours si vous êtes menacé ?", antwoord: "Je peux appeler le SOC voor demander l'intervention de Securail ou de la Police. Je peux aussi porter plainte." },
@@ -805,40 +805,51 @@
   }
 
   // =========================
-  // SPEECH (TTS) - IOS PROOF (SLOW) - ALICE
+  // SPEECH (TTS) - IOS PROOF (SLOW) - SMART FALLBACK
   // =========================
   
   function speakText(text) {
     if (!text) return;
 
-    // 1. Stop vorige spraak
     window.speechSynthesis.cancel();
 
-    // 2. Maak de zin
     const utter = new SpeechSynthesisUtterance(text);
-    
-    // 3. SNELHEID AANPASSEN
     utter.rate = 0.8; 
-    
-    // 4. Taal instellen
-    utter.lang = "fr-BE"; // Voorkeur België
 
-    // 5. Probeer de beste stem te kiezen (Alice > Audrey > Frans)
+    // SLIMME STEM SELECTIE:
     const voices = window.speechSynthesis.getVoices();
     
-    const bestVoice = voices.find(v => v.name.includes("Alice")) || 
-                      voices.find(v => v.lang === "fr-BE") ||
-                      voices.find(v => v.lang.toLowerCase().includes("fr"));
-                      
-    if (bestVoice) {
-        utter.voice = bestVoice;
+    // 1. Zoek Alice (Beste Belgische stem)
+    let selectedVoice = voices.find(v => v.name.includes("Alice"));
+    
+    // 2. Als Alice er niet is, zoek Thomas (Beste Franse stem)
+    if (!selectedVoice) {
+        selectedVoice = voices.find(v => v.name.includes("Thomas"));
+    }
+    
+    // 3. Als Thomas er ook niet is, zoek Audrey
+    if (!selectedVoice) {
+        selectedVoice = voices.find(v => v.name.includes("Audrey"));
     }
 
-    // 6. Spreek
+    // 4. Als niemand er is, neem eender welke fr-BE of fr-FR stem
+    if (!selectedVoice) {
+        selectedVoice = voices.find(v => v.lang === "fr-BE") || 
+                        voices.find(v => v.lang === "fr-FR") ||
+                        voices.find(v => v.lang.toLowerCase().includes("fr"));
+    }
+
+    // Pas de stem toe als we er eentje vonden
+    if (selectedVoice) {
+        utter.voice = selectedVoice;
+        utter.lang = selectedVoice.lang;
+    } else {
+        utter.lang = "fr-FR"; // Fallback
+    }
+
     window.speechSynthesis.speak(utter);
   }
   
-  // Functie: Verwijdert nummering aan het begin (bv. "1.1 " of "5.2.3 ")
   function stripPrefixForSpeech(text) {
     return text.replace(/^[0-9.]+\s+/, "");
   }
