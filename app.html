@@ -4,8 +4,6 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>SELOR Frans (B2) – Oefenapp</title>
-
-<!-- Icoon voor iPhone -->
 <link rel="apple-touch-icon" href="icon.png">
 
 <style>
@@ -37,10 +35,10 @@
 
   nav button {
     flex: 1;
-    padding: 15px 5px;
+    padding: 10px 4px; 
     border: none;
     background: #fff;
-    font-size: 14px;
+    font-size: 12px;
     cursor: pointer;
     font-weight: 600;
     color: #555;
@@ -58,7 +56,7 @@
     padding: 16px;
     max-width: 800px;
     margin: 0 auto;
-    padding-bottom: 80px; /* Ruimte voor scroll */
+    padding-bottom: 80px; 
   }
 
   section.active {
@@ -91,7 +89,7 @@
     font-size: 16px;
     cursor: pointer;
     font-weight: bold;
-    flex-grow: 1; /* Knoppen vullen de breedte */
+    flex-grow: 1; 
   }
   
   button.action:active { background-color: #004d80; }
@@ -189,7 +187,7 @@
   audio { width: 100%; margin-top: 10px; }
 
   /* Antwoord tekst */
-  #oefenAntwoord, #simAntwoord {
+  #oefenAntwoord, #simAntwoord, .monologue-text {
     background-color: #f1f4f8;
     padding: 15px;
     border-radius: 6px;
@@ -199,7 +197,7 @@
   }
 
   @media (max-width: 480px) {
-    nav button { font-size: 13px; padding: 12px 4px; }
+    nav button { font-size: 11px; padding: 10px 2px; } 
     .card { padding: 15px; }
   }
 </style>
@@ -216,6 +214,8 @@
   <button class="active" onclick="showTab('oefen', this)">Oefenen</button>
   <button onclick="showTab('simulatie', this)">Simulatie</button>
   <button onclick="showTab('zelftest', this)">Zelftest</button>
+  <button onclick="showTab('monologue', this)">Mono 1</button>
+  <button onclick="showTab('mono_collega', this)">Mono (Lijst)</button>
   <button onclick="showTab('spiek', this)">Spiekbrief</button>
 </nav>
 
@@ -337,6 +337,144 @@
   </div>
 </section>
 
+<!-- MONOLOOG 1 TAB (De Originele) -->
+<section id="monologue">
+  <div class="card">
+    <h3 style="margin-top:0;">Monoloog 1 (Algemeen)</h3>
+    <p class="small" style="margin-top:0;">
+      De basisverhalen om te vertellen.
+    </p>
+
+    <span class="helpLink" onclick="toggleHelp('help-mono')">ℹ️ Hoe gebruik ik dit?</span>
+    <div class="helpBox" id="help-mono">
+      <strong>Strategie:</strong><br>
+      1. <strong>Introductie</strong> (Wie ben ik?).<br>
+      2. <strong>Een werkdag</strong> (Wat doe ik?).<br>
+      3. <strong>De Expert</strong> (Veiligheid & Problemen).<br>
+      4. <strong>De Joker</strong> (Een concreet voorbeeld/STAR).<br>
+      Luister naar de audio om de zinnen in je hoofd te krijgen.
+    </div>
+
+    <hr>
+
+    <!-- Deel 1 -->
+    <h4 style="color:#006ab3;">1. Introductie (Wie en Waarom)</h4>
+    <div class="monologue-text" id="mono1">
+      Bonjour. Je m’appelle Valerie et je travaille comme accompagnateur de train à la SNCB depuis 2 ans. J'aime ce métier pour la variété et le contact humain. Je travaille au dépôt de [Depot], ce qui est pratique pour moi. Les horaires sont variables, mais j'apprécie d'avoir congé en semaine. Je suis ici pour confirmer mes compétences et devenir statutaire.
+    </div>
+    <div class="row">
+      <button class="iconBtn" onclick="speakText(document.getElementById('mono1').innerText)">🔊 Luister</button>
+    </div>
+
+    <br>
+
+    <!-- Deel 2 -->
+    <h4 style="color:#006ab3;">2. Een dag uit het leven (Het Verhaal)</h4>
+    <div class="monologue-text" id="mono2">
+      Laissez-moi décrire une journée typique. D'abord, je vérifie mon planning et mon matériel (tablette, pince, clé, sifflet). Ensuite, je prépare le train : je vérifie les freins et les portes. Le moment critique est le départ : je ferme les portes, je vérifie la sécurité et je donne le signal. Une fois en route, je contrôle les billets et j'aide les voyageurs.
+    </div>
+    <div class="row">
+      <button class="iconBtn" onclick="speakText(document.getElementById('mono2').innerText)">🔊 Luister</button>
+    </div>
+
+    <br>
+
+    <!-- Deel 3 -->
+    <h4 style="color:#006ab3;">3. De Expert (Veiligheid & Problemen)</h4>
+    <div class="monologue-text" id="mono3">
+      La sécurité est ma priorité absolue. Je suis responsable de centaines de personnes. Je gère les problèmes techniques, comme une porte bloquée que je dois condamner. Je gère aussi les voyageurs difficiles : je reste calme, poli mais ferme. En cas d'accident grave, je sais quoi faire : ne laisser personne descendre et contacter les secours via le SOC.
+    </div>
+    <div class="row">
+      <button class="iconBtn" onclick="speakText(document.getElementById('mono3').innerText)">🔊 Luister</button>
+    </div>
+
+    <br>
+
+    <!-- Deel 4 (STAR) -->
+    <h4 style="color:#006ab3;">4. Een concreet voorbeeld (STAR)</h4>
+    <div class="monologue-text" id="mono4">
+      Vous me demandez un exemple de gestion de stress ? Dans mon travail précédent, j'ai eu affaire à un client très agressif qui n'était pas d'accord avec une procédure. Il criait. Ce que j'ai fait : D'abord, je suis resté très calme. Je l'ai écouté pour qu'il se sente compris. Ensuite, j'ai expliqué fermement mais poliment que je devais suivre les règles. Le résultat : Finalement, il s'est calmé. Cela prouve que je suis capable de garder mon sang-froid.
+    </div>
+    <div class="row">
+      <button class="iconBtn" onclick="speakText(document.getElementById('mono4').innerText)">🔊 Luister</button>
+    </div>
+
+  </div>
+</section>
+
+<!-- MONOLOOG COLLEGA TAB (NIEUW) -->
+<section id="mono_collega">
+  <div class="card">
+    <h3 style="margin-top:0;">Monoloog (Uit de Lijst)</h3>
+    <p class="small" style="margin-top:0;">
+      De samenvatting van de 32 gekozen vragen.
+    </p>
+
+    <span class="helpLink" onclick="toggleHelp('help-mono2')">ℹ️ Hoe gebruik ik dit?</span>
+    <div class="helpBox" id="help-mono2">
+      <strong>Samenvatting:</strong><br>
+      Deze monoloog bundelt de antwoorden van de 32 belangrijkste vragen (volgens de lijst) in 5 logische verhalen.<br>
+      Vertel deze 5 blokken na elkaar en u vult makkelijk 10 minuten.
+    </div>
+
+    <hr>
+
+    <!-- Deel 1 -->
+    <h4 style="color:#006ab3;">1. Mijn Parcours & De Job (Wie en Wat)</h4>
+    <div class="monologue-text" id="collega1">
+      Je travaille comme accompagnateur depuis 2 ans. J'ai postulé à la SNCB pour la stabilité et le contact social. Avant, j'ai fait des études en [Domaine], mais je voulais un métier plus actif. Je suis satisfait de mon travail, même si les horaires sont irréguliers. Une journée ordinaire commence par la vérification de mon matériel (tablette, clé de Berne) et la préparation du train. J'aime mon uniforme et je préfère travailler dans les trains modernes comme les Desiro ou M7 sur les lignes InterCity.
+    </div>
+    <div class="row">
+      <button class="iconBtn" onclick="speakText(document.getElementById('collega1').innerText)">🔊 Luister</button>
+    </div>
+
+    <br>
+
+    <!-- Deel 2 -->
+    <h4 style="color:#006ab3;">2. Controle & Tickets (Het Commerciële)</h4>
+    <div class="monologue-text" id="collega2">
+      Concernant le contrôle, je ne suis pas sévère, je suis juste. Je vérifie toujours les billets sauf si le train est bondé. Si un voyageur n'a pas de ticket, je lui propose le tarif à bord. S'il refuse ou ne peut pas payer, je rédige un constat (C170). Si un voyageur a perdu son ticket, il doit en acheter un nouveau. Je connais aussi les nouveaux produits comme le Flex Abonnement et les offres comme le Duo Ticket. Les voyageurs me demandent souvent des infos sur les retards et les correspondances.
+    </div>
+    <div class="row">
+      <button class="iconBtn" onclick="speakText(document.getElementById('collega2').innerText)">🔊 Luister</button>
+    </div>
+
+    <br>
+
+    <!-- Deel 3 -->
+    <h4 style="color:#006ab3;">3. Veiligheid (De Prioriteit)</h4>
+    <div class="monologue-text" id="collega3">
+      Pour moi, la sécurité est plus importante que le contrôle. Le départ est le moment le plus dangereux : je vérifie que personne n'est coincé avant de donner le signal. Je sais aussi quoi faire en cas de problème : si une porte ne s'ouvre pas, je la condamne. En cas de malaise voyageur ou d'agression, j'appelle le SOC. Je suis formé à la gestion de conflits et au secourisme.
+    </div>
+    <div class="row">
+      <button class="iconBtn" onclick="speakText(document.getElementById('collega3').innerText)">🔊 Luister</button>
+    </div>
+
+    <br>
+
+    <!-- Deel 4 -->
+    <h4 style="color:#006ab3;">4. Ernstige Incidenten & Procedures</h4>
+    <div class="monologue-text" id="collega4">
+      En 2 ans, heureusement, je n'ai pas eu beaucoup d'incidents graves, mais je suis préparé. En cas d'accident de personne ou de suicide, je connais la procédure par cœur. La règle d'or est de ne jamais laisser descendre les voyageurs sur les voies à cause du danger. Je dois immédiatement contacter le conducteur et le SOC. Mon rôle est de rassurer les passagers qui sont souvent choqués ou impatients, et d'attendre les secours.
+    </div>
+    <div class="row">
+      <button class="iconBtn" onclick="speakText(document.getElementById('collega4').innerText)">🔊 Luister</button>
+    </div>
+
+    <br>
+
+    <!-- Deel 5 -->
+    <h4 style="color:#006ab3;">5. Anekdote & Toekomst</h4>
+    <div class="monologue-text" id="collega5">
+      Pour l'anecdote, une fois, une dame âgée était paniquée car elle avait oublié son sac avec ses médicaments dans le train précédent. J'ai contacté mes collègues et on a retrouvé son sac. Elle était tellement soulagée qu'elle m'a remercié chaleureusement. C'est ce côté humain que j'aime. Concernant la SNCB, l'actualité c'est le recrutement et les nouveaux trains. Si je pouvais changer quelque chose, j'améliorerais la ponctualité pour le confort de tous.
+    </div>
+    <div class="row">
+      <button class="iconBtn" onclick="speakText(document.getElementById('collega5').innerText)">🔊 Luister</button>
+    </div>
+
+  </div>
+</section>
+
 
 <!-- SPIEKBRIEF TAB -->
 <section id="spiek">
@@ -393,8 +531,8 @@
   // =======================================================
   const vragen = [
     // 1. Parcours
-    { vraag: "1.1 Quelle est votre profession actuelle ? Depuis quand exercez-vous cette fonction ?", antwoord: "Je suis accompagnateur de train à la SNCB. Je fais ce métier depuis [X] ans. J’aime beaucoup le contact avec les clients et le fait de bouger tout le temps." },
-    { vraag: "1.2 Dans quel dépôt travaillez-vous ? Est-ce loin de votre domicile ?", antwoord: "Je travaille au dépôt de [Naam]. C'est à environ [X] minutes de chez moi. C'est assez proche, donc c'est facile pour organiser ma vie privée." },
+    { vraag: "1.1 Quelle est votre profession actuelle ? Depuis quand exercez-vous cette fonction ?", antwoord: "Je suis accompagnateur de train à la SNCB. Je fais ce métier depuis 2 ans. J’aime beaucoup le contact avec les clients et le fait de bouger tout le temps." },
+    { vraag: "1.2 Dans quel dépôt travaillez-vous ? Est-ce loin de votre domicile ?", antwoord: "Je travaille au dépôt de Hasselt. C'est à environ [X] minutes de chez moi. C'est assez proche, donc c'est facile pour organiser ma vie privée." },
     { vraag: "1.3 Êtes-vous satisfait ?", antwoord: "Oui, je suis satisfait. Le travail est utile et varié. J'aime l'ambiance avec les collègues. Parfois c'est stressant à cause des retards, mais globalement j'aime mon job." },
     { vraag: "1.4 Comment êtes-vous entré à la SNCB ? Qui vous a donné l’idée/l’envie ?", antwoord: "J'ai vu une offre d'emploi sur internet (ou : un ami m'en a parlé). Je cherchais un emploi stable et j'aime le service public. J'ai donc postulé." },
     { vraag: "1.5 Quelles études avez-vous faites ? Pourquoi n’avez-vous pas continué dans cette voie ?", antwoord: "J’ai étudié [Uw richting]. Mais je ne voulais pas rester assis dans un bureau. Je voulais un travail plus dynamique avec du contact humain." },
@@ -416,7 +554,7 @@
     { vraag: "3.3 Aimez-vous ce rythme de travail ? Est-ce compatible avec votre vie sociale ?", antwoord: "On s'habitue. L'avantage c'est d'avoir congé en semaine. Mais il faut bien s'organiser avec la familie voor de week-ends." },
 
     // 4. Materiel
-    { vraag: "4.1 De quel matériel l’accompagnateur a-t-il besoin pour travailler ?", antwoord: "Ma tablette (IBIS) pour les horaires, ma pince pour valider, mon sifflet pour le départ et ma clé de Berne pour les portes." },
+    { vraag: "4.1 De quel matériel l’accompagnateur a-t-il besoin pour travailler ?", antwoord: "Ma tablette (IBIS) voor de horaires, ma pince voor valider, mon sifflet voor le départ en ma clé de Berne voor de portes." },
     { vraag: "4.2 Décrivez votre uniforme ! En êtes-vous satisfait ?", antwoord: "Pantalon bleu, chemise, cravate, veste SNCB. Je suis satisfait car il est confortable et les voyageurs me reconnaissent tout de suite." },
     { vraag: "4.3 Quels sont les différents types de train qui existent à la SNCB ?", antwoord: "Il y a les automotrices (moteurs intégrés, ex: Desiro) et les trains tractés (locomotive + voitures). Les systèmes de portes sont différents." },
     { vraag: "4.4 Dans quel type de matériel préférez-vous travailler ? Pourquoi ?", antwoord: "Je préfère les modernes (Desiro, M7). Ils sont confortables, il y a la climatisation et de meilleures informations pour les voyageurs." },
@@ -428,7 +566,7 @@
     { vraag: "5.2.2 Pas d’argent - pas de carte d’identité", antwoord: "Si je ne peux pas l'identifier, je peux demander l'assistance de Securail ou de la Police pour vérifier son identité." },
     { vraag: "5.2.3 A rempli son multi dans le train ...", antwoord: "C'est interdit. Le Multi doit être rempli avant de monter. Normalement c'est une amende, mais je peux être flexible si c'est la première fois." },
     { vraag: "5.3 Quels sont les types de fraude les plus fréquents ?", antwoord: "Pas de billet, billet non daté, abonnement oublié, ou voyager en 1ère classe avec un billet 2ème." },
-    { vraag: "5.4 Quelles sont les amendes les plus fréquentes ?", antwoord: "Le constat (C170) est de 75€ (ou 90€ si envoyé à domicile). Souvent pour 'défaut de titre de transport'." },
+    { vraag: "5.4 Quelles sont les amendes les plus fréquentes ?", antwoord: "Le constat (C170) est de 75€ (ou 90€ si envoyé à domicile). Souvent voor 'défaut de titre de transport'." },
     { vraag: "5.5 L’amende est-elle toujours justifiée ?", antwoord: "Oui, si les règles ne sont pas respectées. Mais je peux faire juste un avertissement verbal si le voyageur est de bonne foi." },
     { vraag: "5.6 Quelle est la suite accordée par la SNCB à vos amendes ?", antwoord: "Je transmets les données au bureau. Ils envoient une lettre pour payer. S'il ne paie pas, ça va chez l'huissier." },
     { vraag: "5.7 Êtes-vous un accompagnateur sévère ?", antwoord: "Non, je suis juste. J'applique le règlement mais je reste humain. Le but n'est pas de punir, mais que tout le monde paie sa place." },
@@ -452,13 +590,13 @@
     { vraag: "6.10 La SNCB a-t-elle récemment lancé un nouveau produit ?", antwoord: "Oui, par exemple le 'Flex Abonnement' pour le télétravail (2 ou 3 jours par semaine)." },
     { vraag: "6.11 Quelles sont les offres temporaires annuelles ?", antwoord: "Le 'Duo Ticket' (2 billets voor 1) ou des promotions pendant les vacances (Winter Promo)." },
     { vraag: "6.12 Peut-on acheter un billet de train longtemps à l’avance ?", antwoord: "Oui, pour le national : 30 jours à l'avance. Pour l'international (TGV) : plusieurs mois à l'avance." },
-    { vraag: "6.13 Si le voyageur n’a pas de titre, que doit-il faire ?", antwoord: "Venir me trouver AVANT ou tout de suite après le départ pour acheter au Tarif à Bord. Sinon, le supplément est plus cher." },
+    { vraag: "6.13 Si le voyageur n’a pas de titre, que doit-il faire ?", antwoord: "Venir me trouver AVANT ou tout de suite après le départ voor acheter au Tarif à Bord. Sinon, le supplément est plus cher." },
     { vraag: "6.14 Faut-il toujours payer un supplément dans le train ?", antwoord: "Oui, sauf si le voyageur monte dans une gare où il n'y a pas d'automate ou si l'automate était en panne." },
 
     // 7. Lignes
     { vraag: "7.1 Quelles lignes faites-vous ?", antwoord: "Je travaille sur les lignes qui partent de mon dépôt (ex: Bruxelles-Anvers). Je vais un peu partout en Belgique." },
     { vraag: "7.2 Quelles lignes préférez-vous ou détestez-vous ?", antwoord: "Je préfère les lignes IC (InterCity) car les trajets sont plus longs et calmes. J'aime moins les lignes L (Omnibus) car il y a trop d'arrêts." },
-    { vraag: "7.3 Y a-t-il des lignes plus dangereuses ?", antwoord: "Oui, certaines lignes autour des grandes villes tard le soir peuvent être plus difficiles à cause de l'insécurité ou de l'alcool." },
+    { vraag: "7.3 Y a-t-il des lignes plus dangereuses ?", antwoord: "Oui, certaines lignes autour des grandes villes tard le soir kunnen soms schwieriger zijn door onveiligheid." },
 
     // 8. Problemes
     { vraag: "8.1 Quels sont les problèmes les plus fréquents avec les voyageurs ?", antwoord: "Les discussions sur la validité du ticket, les nuisances sonores, les pieds sur les sièges et parfois l'agressivité." },
